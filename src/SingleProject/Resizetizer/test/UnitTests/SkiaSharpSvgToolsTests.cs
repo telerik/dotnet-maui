@@ -270,6 +270,28 @@ namespace Microsoft.Maui.Resizetizer.Tests
 				Assert.Equal(SKColors.Empty, pixmap.GetPixelColor(2, 2));
 				Assert.Equal(0xFF71559B, pixmap.GetPixelColor(2, 6));
 			}
+
+			[Fact]
+			public void ImageWithProblem()
+			{
+				var info = new ResizeImageInfo();
+				info.Filename = "images/find_icon.svg";
+				var tools = new SkiaSharpSvgTools(info, Logger);
+				var dpiPath = new DpiPath("", 1);
+
+				tools.Resize(dpiPath, DestinationFilename);
+
+				using var resultImage = SKBitmap.Decode(DestinationFilename);
+				Assert.Equal(256, resultImage.Width);
+				Assert.Equal(256, resultImage.Height);
+
+				using var pixmap = resultImage.PeekPixels();
+				Assert.Equal(SKColors.Empty, pixmap.GetPixelColor(10, 10));
+				Assert.Equal(SKColors.Red, pixmap.GetPixelColor(37, 137));
+				Assert.Equal(SKColors.Lime, pixmap.GetPixelColor(81, 137));
+				Assert.Equal(SKColors.Blue, pixmap.GetPixelColor(125, 137));
+			}
+
 		}
 	}
 }
