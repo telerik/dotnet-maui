@@ -189,5 +189,9 @@
         Update="Fizzler"
         Version="$(FizzlerPackageVersion)"
     />
+    <PackageReference
+        Update="ExCSS"
+        Version="$(ExCSSPackageVersion)"
+    />
   </ItemGroup>
 </Project>
