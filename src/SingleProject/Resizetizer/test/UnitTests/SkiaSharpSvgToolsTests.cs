@@ -274,7 +274,21 @@ namespace Microsoft.Maui.Resizetizer.Tests
 			[Fact]
 			public void SvgImageWithDecodingIssue()
 			{
-				// 
+				/*
+					As long as this test is passing SVG is not decoded/transformed to PNG correctly.
+
+					Svg.Skia seems to have issues with decoding
+
+					*   https://github.com/wieslawsoltes/Svg.Skia
+
+						*   https://github.com/wieslawsoltes/Svg.Skia/issues
+
+						*   https://github.com/wieslawsoltes/Svg.Skia/issues/99
+
+						*   https://github.com/svg-net/SVG/issues/917
+
+					*   https://youtrack.jetbrains.com/issue/FL-17680/SVG-icons-may-be-rendered-wrong-in-Skia
+				*/
 				var info = new ResizeImageInfo();
 				info.Filename = "images/find_icon.svg";
 				var tools = new SkiaSharpSvgTools(info, Logger);
@@ -287,11 +301,26 @@ namespace Microsoft.Maui.Resizetizer.Tests
 				Assert.Equal(200, resultImage.Height);
 
 				using var pixmap = resultImage.PeekPixels();
+				SKColor sKColor;
+				;
+
 				Assert.Equal(SKColors.Empty, pixmap.GetPixelColor(10, 10));
 				Assert.Equal(SKColors.Empty, pixmap.GetPixelColor(37, 137));
 				Assert.Equal(SKColors.Empty, pixmap.GetPixelColor(81, 137));
-				SKColor sKColor = SKColor.Parse("#ff635df7");
+				sKColor = SKColor.Parse("#ff635df7");
 				Assert.Equal(sKColor, pixmap.GetPixelColor(125, 137));
+
+				// following areas are "missing" (not converted)
+				sKColor = SKColor.Parse("#A5ADF6");
+				Assert.NotEqual(sKColor, pixmap.GetPixelColor(22, 62));
+				Assert.NotEqual(sKColor, pixmap.GetPixelColor(72, 109));
+				Assert.NotEqual(sKColor, pixmap.GetPixelColor(131, 23));
+				Assert.NotEqual(sKColor, pixmap.GetPixelColor(178, 153));
+				// sKColor = SKColor.Parse("#000000");
+				Assert.Equal(SKColors.Empty, pixmap.GetPixelColor(22, 62));
+				Assert.Equal(SKColors.Empty, pixmap.GetPixelColor(72, 109));
+				Assert.Equal(SKColors.Empty, pixmap.GetPixelColor(131, 23));
+				Assert.Equal(SKColors.Empty, pixmap.GetPixelColor(178, 153));
 			}
 
 		}
