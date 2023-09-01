@@ -33,12 +33,12 @@ parameters:
   default: $(System.DefaultWorkingDirectory)
 
 steps:
-  - template: provision.yml
-    parameters:
-      checkoutDirectory: ${{ parameters.checkoutDirectory }}
-      poolName: ${{ parameters.poolName }}
-      provisionatorChannel: ${{ parameters.provisionatorChannel }}
-      gitHubToken: ${{ parameters.gitHubToken }}
+  # - template: provision.yml
+  #   parameters:
+  #     checkoutDirectory: ${{ parameters.checkoutDirectory }}
+  #     poolName: ${{ parameters.poolName }}
+  #     provisionatorChannel: ${{ parameters.provisionatorChannel }}
+  #     gitHubToken: ${{ parameters.gitHubToken }}
 
   - ${{ each step in parameters.prepareSteps }}:
     - ${{ each pair in step }}:
