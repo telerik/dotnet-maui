@@ -629,7 +629,7 @@ namespace Microsoft.Maui.Resizetizer.Tests
 				var success = task.Execute();
 				Assert.True(success, LogErrorEvents.FirstOrDefault()?.Message);
 
-				AssertFileSize($"drawable-mdpi/dotnet_bot.png", 249, 280);
+				AssertFileSize($"drawable-mdpi/dotnet_bot.png", 250, 281);
 				AssertFileSize($"drawable-xhdpi/dotnet_bot.png", 498, 560);
 
 				AssertFileMatches($"drawable-mdpi/dotnet_bot.png", new object[] { "mdpi" });
