@@ -272,7 +272,7 @@ namespace Microsoft.Maui.Resizetizer.Tests
 			}
 
 			[Fact]
-			public void SvgImageWithDecodingIssue()
+			public void SvgImageWithDecodingIssue_15442()
 			{
 				/*
 					As long as this test is passing SVG is not decoded/transformed to PNG correctly.
@@ -323,6 +323,42 @@ namespace Microsoft.Maui.Resizetizer.Tests
 				Assert.Equal(SKColors.Empty, pixmap.GetPixelColor(178, 153));
 			}
 
+			[Fact]
+			public void SvgImageWithDecodingIssue_12109()
+			{
+				var info = new ResizeImageInfo();
+				info.Filename = "images/warning.svg";
+				var tools = new SkiaSharpSvgTools(info, Logger);
+				var dpiPath = new DpiPath("", 1);
+
+				tools.Resize(dpiPath, DestinationFilename);
+
+				using var resultImage = SKBitmap.Decode(DestinationFilename);
+				Assert.Equal(200, resultImage.Width);
+				Assert.Equal(200, resultImage.Height);
+
+				using var pixmap = resultImage.PeekPixels();
+				SKColor sKColor;
+				;
+
+				Assert.Equal(SKColors.Empty, pixmap.GetPixelColor(10, 10));
+				Assert.Equal(SKColors.Empty, pixmap.GetPixelColor(37, 137));
+				Assert.Equal(SKColors.Empty, pixmap.GetPixelColor(81, 137));
+				sKColor = SKColor.Parse("#ff635df7");
+				Assert.Equal(sKColor, pixmap.GetPixelColor(125, 137));
+
+				// following areas are "missing" (not converted)
+				sKColor = SKColor.Parse("#A5ADF6");
+				Assert.NotEqual(sKColor, pixmap.GetPixelColor(22, 62));
+				Assert.NotEqual(sKColor, pixmap.GetPixelColor(72, 109));
+				Assert.NotEqual(sKColor, pixmap.GetPixelColor(131, 23));
+				Assert.NotEqual(sKColor, pixmap.GetPixelColor(178, 153));
+				// sKColor = SKColor.Parse("#000000");
+				Assert.Equal(SKColors.Empty, pixmap.GetPixelColor(22, 62));
+				Assert.Equal(SKColors.Empty, pixmap.GetPixelColor(72, 109));
+				Assert.Equal(SKColors.Empty, pixmap.GetPixelColor(131, 23));
+				Assert.Equal(SKColors.Empty, pixmap.GetPixelColor(178, 153));
+			}
 		}
 	}
 }
