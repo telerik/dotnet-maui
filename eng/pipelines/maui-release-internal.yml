@@ -78,7 +78,7 @@ stages:
                 provisionatorChannel: ${{ parameters.provisionatorChannel }}
                 artifact:  ${{ PackPlatform.artifact }}
 
-  - ${{ if or(eq(variables['System.TeamProject'], 'DevDiv'), eq(variables['Build.DefinitionName'], 'dotnet-maui')) }}:
+  # - ${{ if or(eq(variables['System.TeamProject'], 'DevDiv'), eq(variables['Build.DefinitionName'], 'dotnet-maui')) }}:
     # - template: common/sign.yml                                     # Sign only using the private server
     # - template: common/insertion.yml                                # Insert on VS and SDK
     #   parameters:
