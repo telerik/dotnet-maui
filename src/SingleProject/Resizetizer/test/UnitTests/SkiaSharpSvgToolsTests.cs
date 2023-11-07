@@ -346,8 +346,9 @@ namespace Microsoft.Maui.Resizetizer.Tests
 				;
 
 				Assert.Equal(SKColors.Empty, pixmap.GetPixelColor(10, 10));
-				Assert.Equal(SKColors.Empty, pixmap.GetPixelColor(37, 137));
 				Assert.Equal(SKColors.Empty, pixmap.GetPixelColor(81, 137));
+				sKColor = SKColor.Parse("#0db1b1ff");
+				Assert.Equal(sKColor, pixmap.GetPixelColor(37, 137));
 				sKColor = SKColor.Parse("#ff635df7");
 				Assert.Equal(sKColor, pixmap.GetPixelColor(125, 137));
 
