@@ -305,8 +305,9 @@ namespace Microsoft.Maui.Resizetizer.Tests
 				;
 
 				Assert.Equal(SKColors.Empty, pixmap.GetPixelColor(10, 10));
-				Assert.Equal(SKColors.Empty, pixmap.GetPixelColor(37, 137));
 				Assert.Equal(SKColors.Empty, pixmap.GetPixelColor(81, 137));
+				sKColor = SKColor.Parse("#0db1b1ff");
+				Assert.Equal(sKColor, pixmap.GetPixelColor(37, 137));
 				sKColor = SKColor.Parse("#ff635df7");
 				Assert.Equal(sKColor, pixmap.GetPixelColor(125, 137));
 
@@ -316,12 +317,11 @@ namespace Microsoft.Maui.Resizetizer.Tests
 				Assert.NotEqual(sKColor, pixmap.GetPixelColor(72, 109));
 				Assert.NotEqual(sKColor, pixmap.GetPixelColor(131, 23));
 				Assert.NotEqual(sKColor, pixmap.GetPixelColor(178, 153));
-				// sKColor = SKColor.Parse("#000000");
-				// TODO: check why this one is not working
-				// Assert.Equal(SKColors.Empty, pixmap.GetPixelColor(22, 62));
-				// Assert.Equal(SKColors.Empty, pixmap.GetPixelColor(72, 109));
-				// Assert.Equal(SKColors.Empty, pixmap.GetPixelColor(131, 23));
-				// Assert.Equal(SKColors.Empty, pixmap.GetPixelColor(178, 153));
+				sKColor = SKColor.Parse("#000000");
+				Assert.Equal(SKColors.Empty, pixmap.GetPixelColor(22, 62));
+				Assert.Equal(SKColors.Empty, pixmap.GetPixelColor(72, 109));
+				Assert.Equal(SKColors.Empty, pixmap.GetPixelColor(131, 23));
+				Assert.Equal(SKColors.Empty, pixmap.GetPixelColor(178, 153));
 			}
 
 			[Fact]
