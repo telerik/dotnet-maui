@@ -21,8 +21,8 @@ namespace Maui.Controls.Sample.CollectionViewGalleries
 			var layout = new StackLayout { Margin = 3 };
 
 			var indexLabel = new Label { Text = "Scroll To Index: ", VerticalTextAlignment = TextAlignment.Center };
-			_entry = new Entry { Keyboard = Keyboard.Numeric, Text = "0", WidthRequest = 200 };
-			var indexButton = new Button { Text = "Go" };
+			_entry = new Entry { AutomationId = "entryScrollTo", Keyboard = Keyboard.Numeric, Text = "0", WidthRequest = 200 };
+			var indexButton = new Button { AutomationId = "btnGo", Text = "Go" };
 
 			indexButton.Clicked += ScrollTo;
 

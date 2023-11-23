@@ -8,9 +8,9 @@ namespace Maui.Controls.Sample.CollectionViewGalleries
 	internal class ScrollToItemControl : ContentView
 	{
 		readonly Picker _picker;
-		ItemsView _itemsView;
+		readonly ItemsView _itemsView;
 		ScrollToPosition _currentScrollToPosition;
-		Switch _animateSwitch;
+		readonly Switch _animateSwitch;
 
 		public ScrollToItemControl(ItemsView itemsView, bool showPositionSelector = true)
 		{
@@ -33,8 +33,8 @@ namespace Maui.Controls.Sample.CollectionViewGalleries
 			};
 
 			var indexLabel = new Label { Text = "Scroll To Item: ", VerticalTextAlignment = TextAlignment.Center };
-			_picker = new Picker { WidthRequest = 200 };
-			var indexButton = new Button { Text = "Go" };
+			_picker = new Picker { AutomationId = "pickerSelectItem", WidthRequest = 200 };
+			var indexButton = new Button { AutomationId = "btnGo", Text = "Go" };
 
 			indexButton.Clicked += ScrollTo;
 
