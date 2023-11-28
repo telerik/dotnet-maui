@@ -1,8 +1,7 @@
 ﻿using NUnit.Framework;
 using UITest.Appium;
 using UITest.Core;
-using static System.Net.Mime.MediaTypeNames;
-
+  
 namespace Microsoft.Maui.AppiumTests
 {
 	public class CollectionViewUITests : UITest
@@ -47,7 +46,8 @@ namespace Microsoft.Maui.AppiumTests
 		{
 			this.Back();
 		}
-	
+
+		// VisitAndUpdateItemsSource (src\Compatibility\ControlGallery\src\UITests.Shared\Tests\CollectionViewUITests.cs)
 		[TestCase("Observable Collection", "Add/RemoveItemsList", 19, 6)]
 		[TestCase("Observable Collection", "Add/RemoveItemsGrid", 19, 6)]
 		[TestCase("Default Text", "VerticalListCode", 101, 11)]
