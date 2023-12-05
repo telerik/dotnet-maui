@@ -28,58 +28,52 @@
 				Text="Clear Selection"
 				Clicked="ClearClicked" />
 
-			<CollectionView
+            <CollectionView
 				ItemsSource="{Binding Items}"
 				SelectionMode="Single"
 				SelectedItem="{Binding SelectedItem}">
-
-				<CollectionView.Resources>
-					<ResourceDictionary>
-						<Style TargetType="Frame">
-							<Setter Property="VisualStateManager.VisualStateGroups">
-
-								<VisualStateGroupList>
-									<VisualStateGroup x:Name="CommonStates">
-										<VisualState x:Name="Normal" />
-										<VisualState x:Name="Selected">
-											<VisualState.Setters>
-												<Setter
+                <CollectionView.Resources>
+                    <ResourceDictionary>
+                        <Style TargetType="Frame">
+                            <Setter Property="VisualStateManager.VisualStateGroups">
+                                <VisualStateGroupList>
+                                    <VisualStateGroup x:Name="CommonStates">
+                                        <VisualState x:Name="Normal" />
+                                        <VisualState x:Name="Selected">
+                                            <VisualState.Setters>
+                                                <Setter
 													Property="BackgroundColor"
 													Value="RoyalBlue" />
-												<Setter
+                                                <Setter
 													Property="Scale"
 													Value="0.9" />
-											</VisualState.Setters>
-										</VisualState>
-									</VisualStateGroup>
-								</VisualStateGroupList>
-
-							</Setter>
-						</Style>
-					</ResourceDictionary>
-
-				</CollectionView.Resources>
-
-				<CollectionView.ItemTemplate>
-					<DataTemplate>
-						<Frame
+                                            </VisualState.Setters>
+                                        </VisualState>
+                                    </VisualStateGroup>
+                                </VisualStateGroupList>
+                            </Setter>
+                        </Style>
+                    </ResourceDictionary>
+                </CollectionView.Resources>
+                <CollectionView.ItemTemplate>
+                    <DataTemplate>
+                        <Frame
 							HasShadow="False"
 							Margin="10"
 							BackgroundColor="LightBlue"
 							CornerRadius="20">
-							<StackLayout>
-								<Image
+                            <StackLayout>
+                                <Image
 									Source="{Binding Image}"
 									HeightRequest="50" />
-								<Label
-									Text="{Binding Caption}"></Label>
-							</StackLayout>
-
-						</Frame>
-					</DataTemplate>
-				</CollectionView.ItemTemplate>
-			</CollectionView>
-
-		</StackLayout>
+                                <Label
+                                    AutomationId="{Binding Caption}"
+									Text="{Binding Caption}" />
+                            </StackLayout>
+                        </Frame>
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+            </CollectionView>
+        </StackLayout>
 	</ContentPage.Content>
 </ContentPage>

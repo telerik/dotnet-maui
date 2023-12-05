@@ -37,6 +37,7 @@ namespace Maui.Controls.Sample.CollectionViewGalleries
 						TestBuilder.NavButton("Default Text Galleries", () => new DefaultTextGallery(), Navigation),
 						TestBuilder.NavButton("DataTemplate Galleries", () => new DataTemplateGallery(), Navigation),
 						TestBuilder.NavButton("Observable Collection Galleries", () => new ObservableCollectionGallery(), Navigation),
+						// SelectionShouldUpdateBinding (src\Compatibility\ControlGallery\src\Issues.Shared\CollectionViewBoundSingleSelection.cs)
 						// ItemsFromViewModelShouldBeSelected (src\Compatibility\ControlGallery\src\Issues.Shared\CollectionViewBoundMultiSelection.cs)
 						TestBuilder.NavButton("Selection Galleries", () => new SelectionGallery(), Navigation),
 						// CollectionViewBindingErrorsShouldBeZero (src\Compatibility\ControlGallery\src\Issues.Shared\CollectionViewBindingErrors.xaml.cs)
