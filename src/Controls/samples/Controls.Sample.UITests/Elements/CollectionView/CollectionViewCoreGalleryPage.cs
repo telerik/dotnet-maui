@@ -42,6 +42,8 @@ namespace Maui.Controls.Sample.CollectionViewGalleries
 						TestBuilder.NavButton("Selection Galleries", () => new SelectionGallery(), Navigation),
 						// CollectionViewBindingErrorsShouldBeZero (src\Compatibility\ControlGallery\src\Issues.Shared\CollectionViewBindingErrors.xaml.cs)
 						TestBuilder.NavButton("CollectionView Binding Errors", () => new CollectionViewBindingErrors(), Navigation),
+						// AddingGroupToUnviewedGroupedCollectionViewShouldNotCrash (src\Compatibility\ControlGallery\src\Issues.Shared\Issue7700.cs)
+						TestBuilder.NavButton("CollectionView Inside TabbedPage", () => new CollectionViewTabbedPage(), Navigation),
 					}
 				}
 			};
