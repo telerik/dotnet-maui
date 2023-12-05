@@ -30,5 +30,20 @@ namespace Microsoft.Maui.AppiumTests
 		{
 			this.Back();
 		}
+
+		internal void VisitInitialGallery(string collectionTestName)
+		{
+			var galleryName = $"{collectionTestName} Galleries";
+			var regexGalleryName = System.Text.RegularExpressions.Regex.Replace(galleryName, " |\\(|\\)", string.Empty);
+
+			App.WaitForElement(regexGalleryName);
+			App.Click(regexGalleryName);
+		}
+
+		internal void VisitSubGallery(string galleryName)
+		{
+			App.WaitForElement(galleryName);
+			App.Click(galleryName);
+		}
 	}
 }

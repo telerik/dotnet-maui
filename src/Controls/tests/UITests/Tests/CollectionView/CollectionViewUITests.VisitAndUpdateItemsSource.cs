@@ -41,19 +41,9 @@ namespace Microsoft.Maui.AppiumTests
 			this.Back();
 		}
 
-		void VisitInitialGallery(string collectionTestName)
-		{
-			var galleryName = $"{collectionTestName} Galleries";
-			var regexGalleryName = System.Text.RegularExpressions.Regex.Replace(galleryName, " |\\(|\\)", string.Empty);
-
-			App.WaitForElement(regexGalleryName);
-			App.Click(regexGalleryName);
-		}
-
 		void VisitSubGallery(string galleryName, bool scrollDown, string lastItem, string firstPageItem, int updateItemsCount, bool testItemSource, bool testAddRemove)
 		{
-			App.WaitForElement(galleryName);
-			App.Click(galleryName);
+			VisitSubGallery(galleryName);
 
 			// Let's test the update
 			if (testItemSource)

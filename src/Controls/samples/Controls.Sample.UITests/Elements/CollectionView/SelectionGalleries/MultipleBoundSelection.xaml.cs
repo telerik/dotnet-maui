@@ -8,7 +8,7 @@ namespace Maui.Controls.Sample.CollectionViewGalleries.SelectionGalleries
 	[XamlCompilation(XamlCompilationOptions.Compile)]
 	public partial class MultipleBoundSelection : ContentPage
 	{
-		BoundSelectionModel _vm;
+		readonly BoundSelectionModel _vm;
 
 		public MultipleBoundSelection()
 		{
