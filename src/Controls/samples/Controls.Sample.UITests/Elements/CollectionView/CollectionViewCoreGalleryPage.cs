@@ -47,7 +47,9 @@ namespace Maui.Controls.Sample.CollectionViewGalleries
 						// CollectionViewBindingErrorsShouldBeZero (src\Compatibility\ControlGallery\src\Issues.Shared\CollectionViewBindingErrors.xaml.cs)
 						TestBuilder.NavButton("CollectionView Binding Errors", () => new CollectionViewBindingErrors(), Navigation),
 						// AddingGroupToUnviewedGroupedCollectionViewShouldNotCrash (src\Compatibility\ControlGallery\src\Issues.Shared\Issue7700.cs)
-						TestBuilder.NavButton("CollectionView Inside TabbedPage", () => new CollectionViewTabbedPage(), Navigation),
+						TestBuilder.NavButton("CollectionView Inside TabbedPage", () => new CollectionViewTabbedPage(), Navigation),	
+						// CollectionViewShouldSourceShouldUpdateWhileInvisible (src\Compatibility\ControlGallery\src\Issues.Shared\Issue13126.cs)
+						TestBuilder.NavButton("CollectionView Dynamically Load", () => new CollectionViewDynamicallyLoad(), Navigation),
 					}
 				}
 			};
