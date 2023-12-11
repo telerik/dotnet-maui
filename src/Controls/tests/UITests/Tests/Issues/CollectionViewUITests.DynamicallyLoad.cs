@@ -2,11 +2,10 @@
 using UITest.Appium;
 using UITest.Core;
 
-namespace Microsoft.Maui.AppiumTests
+namespace Microsoft.Maui.AppiumTests.Issues
 {
-	public class CollectionViewDynamicallyLoadUITests : CollectionViewUITests
+	public class CollectionViewDynamicallyLoadUITests : _IssuesUITest
 	{
-		const string DynamicallyLoad = "CollectionViewDynamicallyLoad";
 		const string Success = "Success";
 
 		public CollectionViewDynamicallyLoadUITests(TestDevice device)
@@ -14,13 +13,12 @@ namespace Microsoft.Maui.AppiumTests
 		{
 		}
 
+		public override string Issue => "Often fails to draw dynamically loaded collection view content";
+
 		// CollectionViewShouldSourceShouldUpdateWhileInvisible (src\Compatibility\ControlGallery\src\Issues.Shared\Issue13126.cs)
 		[Test]
 		public void DynamicallyLoadCollectionView()
 		{
-			App.WaitForElement(DynamicallyLoad);
-			App.Click(DynamicallyLoad);
-
 			App.WaitForNoElement(Success);
 		}
 	}

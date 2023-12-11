@@ -2,8 +2,9 @@
 using System.Collections.Generic;
 using Microsoft.Maui.Controls;
 using Microsoft.Maui.Controls.Xaml;
+using Maui.Controls.Sample.CollectionViewGalleries;
 
-namespace Maui.Controls.Sample.CollectionViewGalleries
+namespace Maui.Controls.Sample.Issues
 {
 	internal abstract class LogListener
 	{
@@ -96,6 +97,7 @@ namespace Maui.Controls.Sample.CollectionViewGalleries
 	}
 
 	[XamlCompilation(XamlCompilationOptions.Compile)]
+	[Issue(IssueTracker.None, 68000, "Binding errors when CollectionView ItemsSource is set with a binding", PlatformAffected.Android)]
 	public partial class CollectionViewBindingErrors : ContentPage
 	{
 		public CollectionViewBindingErrors()

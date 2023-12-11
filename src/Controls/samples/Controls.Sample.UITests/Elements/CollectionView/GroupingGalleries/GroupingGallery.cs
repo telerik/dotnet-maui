@@ -34,8 +34,6 @@ namespace Maui.Controls.Sample.CollectionViewGalleries.GroupingGalleries
 							new ObservableGrouping(), Navigation),
 						TestBuilder.NavButton("Grouping, Grid", () =>
 							new GridGrouping(), Navigation), 
-						TestBuilder.NavButton("Clear Grouping No Crash", () =>	
-							new ClearGroupedNoCrash(), Navigation),
 					}
 				}
 			};

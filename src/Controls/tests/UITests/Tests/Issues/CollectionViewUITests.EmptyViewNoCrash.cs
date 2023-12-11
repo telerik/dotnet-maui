@@ -4,23 +4,19 @@ using UITest.Core;
 
 namespace Microsoft.Maui.AppiumTests
 {
-	public class EmptyViewNoCrashUITests : CollectionViewUITests
+	public class EmptyViewNoCrashUITests : _IssuesUITest
 	{
 		public EmptyViewNoCrashUITests(TestDevice device)
 			: base(device)
 		{
 		}
 
+		public override string Issue => "CollectionView EmptyView causes the application to crash";
+
 		// EmptyViewShouldNotCrash (src\Compatibility\ControlGallery\src\Issues.Shared\Issue9196.xaml.cs)
 		[Test]
 		public void EmptyViewShouldNotCrash()
 		{
-			// Navigate to the EmptyView galleries
-			VisitInitialGallery("EmptyView");
-
-			// Navigate to the specific sample inside EmptyView galleries
-			VisitSubGallery("EmptyViewNoCrash");
-
 			App.WaitForNoElement("Success");
 		}
 	}

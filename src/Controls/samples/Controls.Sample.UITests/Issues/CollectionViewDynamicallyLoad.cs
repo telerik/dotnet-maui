@@ -8,8 +8,10 @@ using System.Threading.Tasks;
 using Microsoft.Maui;
 using Microsoft.Maui.Controls;
 
-namespace Maui.Controls.Sample.CollectionViewGalleries
+namespace Maui.Controls.Sample.Issues
 {
+	// CollectionViewShouldSourceShouldUpdateWhileInvisible (src\Compatibility\ControlGallery\src\Issues.Shared\Issue13126.cs)
+	[Issue(IssueTracker.None, 0, "Often fails to draw dynamically loaded collection view content", PlatformAffected.iOS)]
 	public class CollectionViewDynamicallyLoad : ContentPage
 	{
 		const string Success = "Success";

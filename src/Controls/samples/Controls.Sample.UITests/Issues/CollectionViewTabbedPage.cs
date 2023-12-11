@@ -4,7 +4,7 @@ using System.Collections.ObjectModel;
 using Microsoft.Maui.Controls;
 using Microsoft.Maui.Controls.Xaml;
 
-namespace Maui.Controls.Sample.CollectionViewGalleries
+namespace Maui.Controls.Sample.Issues
 {
 	class Group : List<string>
 	{
@@ -18,6 +18,8 @@ namespace Maui.Controls.Sample.CollectionViewGalleries
 		}
 	}
 
+	// AddingGroupToUnviewedGroupedCollectionViewShouldNotCrash (src\Compatibility\ControlGallery\src\Issues.Shared\Issue7700.cs)
+	[Issue(IssueTracker.None, 7700, "If CollectionView in other Tab gets changed before it's displayed, it stays invisible", PlatformAffected.iOS)]
 	public class CollectionViewTabbedPage : TabbedPage
 	{
 		const string Add1 = "Add1";

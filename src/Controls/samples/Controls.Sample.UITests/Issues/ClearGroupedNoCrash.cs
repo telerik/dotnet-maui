@@ -1,12 +1,11 @@
-﻿using Microsoft.Maui;
-using Microsoft.Maui.Controls;
-using Controls.Sample.UITests;
+﻿using Microsoft.Maui.Controls;
 using System.Collections.ObjectModel;
 using System.Collections.Generic;
 
-namespace Maui.Controls.Sample.CollectionViewGalleries.GroupingGalleries
+namespace Maui.Controls.Sample.Issues
 {
 	// ClearingGroupedCollectionViewShouldNotCrash (src\Compatibility\ControlGallery\src\Issues.Shared\Issue8899.cs)
+	[Issue(IssueTracker.Github, 8899, "Clearing Grouped CollectionView crashes application")]
 	public class ClearGroupedNoCrash : ContentPage
 	{
 		const string Go = "Go";

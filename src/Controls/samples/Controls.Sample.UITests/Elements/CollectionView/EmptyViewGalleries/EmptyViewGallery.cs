@@ -36,8 +36,6 @@ namespace Maui.Controls.Sample.CollectionViewGalleries.EmptyViewGalleries
 							new EmptyViewLoadSimulateGallery(), Navigation),
 						TestBuilder.NavButton("EmptyView RTL", () =>
 							new EmptyViewRTLGallery(), Navigation), 
-						TestBuilder.NavButton("EmptyView No Crash", () =>
-							new EmptyViewNoCrash(), Navigation)
 					}
 				}
 			};

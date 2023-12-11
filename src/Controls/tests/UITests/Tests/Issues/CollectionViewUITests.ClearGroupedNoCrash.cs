@@ -4,7 +4,7 @@ using UITest.Core;
 
 namespace Microsoft.Maui.AppiumTests
 {
-	public class ClearGroupedNoCrashUITests : CollectionViewUITests
+	public class ClearGroupedNoCrashUITests : _IssuesUITest
 	{
 		const string Go = "Go";
 		const string Success = "Success";
@@ -14,17 +14,13 @@ namespace Microsoft.Maui.AppiumTests
 		{
 		}
 
+		public override string Issue => "Clearing Grouped CollectionView crashes application";
+
 		// ClearingGroupedCollectionViewShouldNotCrash (src\Compatibility\ControlGallery\src\Issues.Shared\Issue8899.cs)
 		[Test]
 		[Description("Clearing CollectionView IsGrouped=\"True\" no crashes application")]
 		public void ClearingGroupedNoCrash()
 		{
-			// Navigate to the Grouping galleries
-			VisitInitialGallery("Grouping");
-
-			// Navigate to the specific sample inside Grouping galleries
-			VisitSubGallery("ClearGroupingNoCrash");
-
 			App.WaitForElement(Go);
 			App.Click(Go);
 
