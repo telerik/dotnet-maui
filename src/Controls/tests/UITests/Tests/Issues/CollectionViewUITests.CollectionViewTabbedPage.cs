@@ -21,6 +21,7 @@ namespace Microsoft.Maui.AppiumTests
 
 		// AddingGroupToUnviewedGroupedCollectionViewShouldNotCrash (src\Compatibility\ControlGallery\src\Issues.Shared\Issue7700.cs)
 		[Test]
+		[Ignore("Click does not find Tab elements")]
 		public void AddingItemToUnviewedCollectionViewShouldNotCrash()
 		{
 			this.IgnoreIfPlatforms(new TestDevice[] { TestDevice.Android, TestDevice.iOS, TestDevice.Mac, TestDevice.Windows },
@@ -35,6 +36,7 @@ namespace Microsoft.Maui.AppiumTests
 
 		// AddingGroupToUnviewedGroupedCollectionViewShouldNotCrash (src\Compatibility\ControlGallery\src\Issues.Shared\Issue7700.cs)
 		[Test]
+		[Ignore("Click does not find Tab elements")]
 		public void AddingGroupToUnviewedGroupedCollectionViewShouldNotCrash()
 		{
 			this.IgnoreIfPlatforms(new TestDevice[] { TestDevice.Android, TestDevice.iOS, TestDevice.Mac, TestDevice.Windows },
