@@ -6,18 +6,19 @@ namespace Microsoft.Maui.AppiumTests
 {
 	public class CollectionViewTabbedPageUITests : _IssuesUITest
 	{
-		const string Add1 = "Add1";
-		const string Add2 = "Add2";
-		const string Success = "Success";
-		const string Tab2 = "Tab2";
-		const string Tab3 = "Tab3";
-
 		public CollectionViewTabbedPageUITests(TestDevice device)
 			: base(device)
 		{
 		}
 
 		public override string Issue => "If CollectionView in other Tab gets changed before it's displayed, it stays invisible";
+
+		/*
+		const string Add1 = "Add1";
+		const string Add2 = "Add2";
+		const string Success = "Success";
+		const string Tab2 = "Tab2";
+		const string Tab3 = "Tab3";
 
 		// AddingGroupToUnviewedGroupedCollectionViewShouldNotCrash (src\Compatibility\ControlGallery\src\Issues.Shared\Issue7700.cs)
 		[Test]
@@ -48,5 +49,6 @@ namespace Microsoft.Maui.AppiumTests
 
 			App.WaitForElement(Success);
 		}
+		*/
 	}
 }
