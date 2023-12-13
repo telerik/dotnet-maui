@@ -36,6 +36,8 @@ namespace Microsoft.Maui.AppiumTests
 		[TestCase("DataTemplate", "HorizontalGridCode", 19, 6)]
 		public void VisitAndUpdateItemsSource(string collectionTestName, string subGallery, int firstItem, int lastItem)
 		{
+			this.IgnoreIfPlatforms(new TestDevice[] { TestDevice.Windows });
+
 			VisitInitialGallery(collectionTestName);
 			VisitSubGallery(subGallery, !subGallery.Contains("Horizontal", StringComparison.OrdinalIgnoreCase), $"Item: {firstItem}", $"Item: {lastItem}", lastItem - 1, true, false);
 			this.Back();

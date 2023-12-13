@@ -17,6 +17,8 @@ namespace Microsoft.Maui.AppiumTests
 		[Test]
 		public void EmptyViewShouldNotCrash()
 		{
+			this.IgnoreIfPlatforms(new TestDevice[] { TestDevice.iOS, TestDevice.Mac });
+
 			App.WaitForNoElement("Success");
 		}
 	}

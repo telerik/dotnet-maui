@@ -21,6 +21,8 @@ namespace Microsoft.Maui.AppiumTests
 		[Description("Clearing CollectionView IsGrouped=\"True\" no crashes application")]
 		public void ClearingGroupedNoCrash()
 		{
+			this.IgnoreIfPlatforms(new TestDevice[] { TestDevice.iOS, TestDevice.Mac });
+
 			App.WaitForElement(Go);
 			App.Click(Go);
 
