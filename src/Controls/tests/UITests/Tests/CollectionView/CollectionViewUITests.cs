@@ -26,7 +26,7 @@ namespace Microsoft.Maui.AppiumTests
 		}
 
 		[TearDown]
-		public void LayoutUITestTearDown()
+		public void CollectionViewUITestTearDown()
 		{
 			this.Back();
 		}
