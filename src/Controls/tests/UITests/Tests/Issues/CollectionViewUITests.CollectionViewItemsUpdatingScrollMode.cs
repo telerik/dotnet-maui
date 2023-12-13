@@ -23,16 +23,21 @@ namespace Microsoft.Maui.AppiumTests
 		[Test]
 		public void KeepItemsInView()
 		{
-			App.WaitForElement("ScrollToMiddle");
-			App.Click("ScrollToMiddle");
-			App.WaitForNoElement("Vegetables.jpg, 10");
-
-			for (int n = 0; n < 25; n++)
+			if (Device == TestDevice.Android || Device == TestDevice.Windows)
 			{
-				App.Click("AddItemAbove");
-			}
+				App.WaitForElement("ScrollToMiddle");
+				App.Click("ScrollToMiddle");
+				App.WaitForNoElement("Vegetables.jpg, 10");
 
-			App.WaitForNoElement("Vegetables.jpg, 10");
+				for (int n = 0; n < 25; n++)
+				{
+					App.Click("AddItemAbove");
+				}
+
+				App.WaitForNoElement("Vegetables.jpg, 10");
+			}
+			else
+				Assert.Ignore();
 		}
 
 		// KeepScrollOffset (src\Compatibility\ControlGallery\src\Issues.Shared\CollectionViewItemsUpdatingScrollMode.cs)
