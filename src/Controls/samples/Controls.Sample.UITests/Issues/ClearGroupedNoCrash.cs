@@ -5,7 +5,7 @@ using System.Collections.Generic;
 namespace Maui.Controls.Sample.Issues
 {
 	// ClearingGroupedCollectionViewShouldNotCrash (src\Compatibility\ControlGallery\src\Issues.Shared\Issue8899.cs)
-	[Issue(IssueTracker.Github, 8899, "Clearing Grouped CollectionView crashes application")]
+	[Issue(IssueTracker.None, 8899, "Clearing Grouped CollectionView crashes application")]
 	public class ClearGroupedNoCrash : ContentPage
 	{
 		const string Go = "Go";
