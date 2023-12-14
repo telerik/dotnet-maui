@@ -28,7 +28,8 @@ namespace Microsoft.Maui.AppiumTests
 		[TearDown]
 		public void CollectionViewUITestTearDown()
 		{
-			this.Back();
+			if (Device != TestDevice.Windows)
+				this.Back();
 		}
 
 		internal void VisitInitialGallery(string collectionTestName)
