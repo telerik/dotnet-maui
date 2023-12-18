@@ -1,33 +1,19 @@
 ﻿using System;
 using System.Collections.ObjectModel;
-using Microsoft.Maui.Controls.CustomAttributes;
-using Microsoft.Maui.Controls.Internals;
+using Microsoft.Maui;
+using Microsoft.Maui.Controls;
 using Microsoft.Maui.Graphics;
 
-#if UITEST
-using Xamarin.UITest;
-using NUnit.Framework;
-using Microsoft.Maui.Controls.Compatibility.UITests;
-#endif
-
-namespace Microsoft.Maui.Controls.ControlGallery.Issues
+namespace Maui.Controls.Sample.Issues
 {
-	[Preserve(AllMembers = true)]
-	[Issue(IssueTracker.Github, 12777, "[Bug] CarouselView NRE if item template is not specified",
-		PlatformAffected.iOS)]
-#if UITEST
-	[Category(UITestCategories.Github10000)]
-	[Category(UITestCategories.CarouselView)]
-#endif
-	public class Issue12777 : TestContentPage
+	// Issue12777 (src\ControlGallery\src\Issues.Shared\Issue12777.cs
+	[Issue(IssueTracker.None, 12777, "[Bug] CarouselView NRE if item template is not specified", PlatformAffected.iOS)]
+	public class CarouselViewNoItemTemplate : ContentPage
 	{
-		public Issue12777()
+		public CarouselViewNoItemTemplate()
 		{
 			BindingContext = new Issue12777ViewModel();
-		}
 
-		protected override void Init()
-		{
 			var layout = new StackLayout();
 
 			var instructions = new Label
@@ -50,27 +36,15 @@ namespace Microsoft.Maui.Controls.ControlGallery.Issues
 
 			Content = layout;
 		}
-
-#if UITEST
-		[PortTest]
-		[Test]
-		[Compatibility.UITests.FailsOnMauiIOS]
-		public void Issue12777Test()
-		{
-			RunningApp.WaitForElement("TestCarouselView");
-			RunningApp.Screenshot("Test passed");
-		}
-#endif
 	}
 
-	[Preserve(AllMembers = true)]
 	public class Issue12777Model
 	{
 		public Color Color { get; set; }
 		public string Name { get; set; }
 	}
 
-	[Preserve(AllMembers = true)]
+
 	public class Issue12777ViewModel : BindableObject
 	{
 		ObservableCollection<Issue12777Model> _items;

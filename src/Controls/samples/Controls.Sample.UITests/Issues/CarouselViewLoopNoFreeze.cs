@@ -3,53 +3,44 @@ using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.Linq;
-using Microsoft.Maui.Controls.CustomAttributes;
-using Microsoft.Maui.Controls.Internals;
+using Microsoft.Maui;
+using Microsoft.Maui.Controls;
 using Microsoft.Maui.Graphics;
 
-#if UITEST
-using Microsoft.Maui.Controls.Compatibility.UITests;
-using Xamarin.UITest;
-using NUnit.Framework;
-#endif
-
-namespace Microsoft.Maui.Controls.ControlGallery.Issues
+namespace Maui.Controls.Sample.Issues
 {
-#if UITEST
-	[NUnit.Framework.Category(UITestCategories.CarouselView)]
-	[NUnit.Framework.Category(UITestCategories.UwpIgnore)]
-#endif
-	[Preserve(AllMembers = true)]
-	[Issue(IssueTracker.Github, 12574, "CarouselView Loop=True default freezes iOS app", PlatformAffected.Default)]
-	public class Issue12574 : TestContentPage
+	// Issue12574 (src\ControlGallery\src\Issues.Shared\Issue12574.cs
+	[Issue(IssueTracker.None, 12574, "CarouselView Loop=True default freezes iOS app", PlatformAffected.Default)]
+	public class CarouselViewLoopNoFreeze : ContentPage
 	{
-		ViewModelIssue12574 viewModel;
-		CarouselView _carouselView;
-		Button _btn;
-		Button _btn2;
-		string carouselAutomationId = "carouselView";
-		string btnRemoveAutomationId = "btnRemove";
-		string btnRemoveAllAutomationId = "btnRemoveAll";
+		readonly string _carouselAutomationId = "carouselView";
+		readonly string _btnRemoveAutomationId = "btnRemove";
+		readonly string _btnRemoveAllAutomationId = "btnRemoveAll";
 
-		protected override void Init()
+		readonly ViewModelIssue12574 _viewModel;
+		readonly CarouselView _carouselView;
+		readonly Button _btn;
+		readonly Button _btn2;
+
+		public CarouselViewLoopNoFreeze()
 		{
 			_btn = new Button
 			{
 				Text = "Remove Last",
-				AutomationId = btnRemoveAutomationId
+				AutomationId = _btnRemoveAutomationId
 			};
 			_btn.SetBinding(Button.CommandProperty, "RemoveLastItemCommand");
 
 			_btn2 = new Button
 			{
 				Text = "Remove All",
-				AutomationId = btnRemoveAllAutomationId
+				AutomationId = _btnRemoveAllAutomationId
 			};
 			_btn2.SetBinding(Button.CommandProperty, "RemoveAllItemsCommand");
 
 			_carouselView = new CarouselView
 			{
-				AutomationId = carouselAutomationId,
+				AutomationId = _carouselAutomationId,
 				Margin = new Thickness(30),
 				BackgroundColor = Colors.Yellow,
 				ItemTemplate = new DataTemplate(() =>
@@ -82,61 +73,16 @@ namespace Microsoft.Maui.Controls.ControlGallery.Issues
 			layout.Children.Add(_btn2);
 			layout.Children.Add(_carouselView);
 
-			BindingContext = viewModel = new ViewModelIssue12574();
+			BindingContext = _viewModel = new ViewModelIssue12574();
 			Content = layout;
 		}
 
 		protected override void OnAppearing()
 		{
 			base.OnAppearing();
-			viewModel.OnAppearing();
+			_viewModel.OnAppearing();
 		}
-
-#if UITEST
-		[PortTest]
-		[Test]
-		[Compatibility.UITests.FailsOnMauiIOS]
-		[Compatibility.UITests.FailsOnMauiAndroid]
-		public void Issue12574Test()
-		{
-			RunningApp.WaitForElement("0 item");
-
-			var rect = RunningApp.Query(c => c.Marked(carouselAutomationId)).First().Rect;
-			var centerX = rect.CenterX;
-			var rightX = rect.X - 5;
-			RunningApp.DragCoordinates(centerX + 40, rect.CenterY, rightX, rect.CenterY);
-
-			RunningApp.WaitForElement("1 item");
-
-			RunningApp.DragCoordinates(centerX + 40, rect.CenterY, rightX, rect.CenterY);
-
-			RunningApp.WaitForElement("2 item");
-
-			RunningApp.Tap(btnRemoveAutomationId);
-			
-			RunningApp.WaitForElement("1 item");
-
-			rightX = rect.X + rect.Width - 1;
-			RunningApp.DragCoordinates(rect.X, rect.CenterY, rightX, rect.CenterY);
-
-			RunningApp.WaitForElement("0 item");
-		}
-
-		[PortTest]
-		[Test]
-		[Compatibility.UITests.FailsOnMauiIOS]
-		[Compatibility.UITests.FailsOnMauiAndroid]
-		public void RemoveItemsQuickly()
-		{
-			RunningApp.WaitForElement("0 item");
-			RunningApp.Tap(btnRemoveAllAutomationId);
-
-			// If we haven't crashed, then the other button should be here
-			RunningApp.WaitForElement(btnRemoveAutomationId);
-		}
-#endif
 	}
-
 	class ViewModelIssue12574 : BaseViewModel1
 	{
 		public ObservableCollection<ModelIssue12574> Items { get; set; }
@@ -147,7 +93,7 @@ namespace Microsoft.Maui.Controls.ControlGallery.Issues
 		public ViewModelIssue12574()
 		{
 			Title = "CarouselView Looping";
-			Items = new ObservableCollection<ModelIssue12574>();
+			Items = [];
 			LoadItemsCommand = new Command(() => ExecuteLoadItemsCommand());
 			RemoveAllItemsCommand = new Command(() => ExecuteRemoveItemsCommand(), () => Items.Count > 0);
 			RemoveLastItemCommand = new Command(() => ExecuteRemoveLastItemCommand(), () => Items.Count > 0);
@@ -237,5 +183,4 @@ namespace Microsoft.Maui.Controls.ControlGallery.Issues
 			PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
 		}
 	}
-
 }

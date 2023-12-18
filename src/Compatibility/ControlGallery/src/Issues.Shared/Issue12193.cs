@@ -66,6 +66,7 @@ namespace Microsoft.Maui.Controls.ControlGallery.Issues
 
 
 #if UITEST
+		[PortTest]
 		[Test]
 		[Compatibility.UITests.FailsOnMauiIOS]
 		public async Task RotatingCarouselViewHTMLShouldNotDisappear()
