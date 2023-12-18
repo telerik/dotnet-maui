@@ -4,66 +4,34 @@ using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.Linq;
 using System.Runtime.CompilerServices;
-using Microsoft.Maui.Controls.CustomAttributes;
-using Microsoft.Maui.Controls.Internals;
+using Microsoft.Maui.Controls;
 using Microsoft.Maui.Controls.Xaml;
 
-#if UITEST
-using Microsoft.Maui.Controls.Compatibility.UITests;
-using Xamarin.UITest;
-using NUnit.Framework;
-#endif
-
-namespace Microsoft.Maui.Controls.ControlGallery.Issues
+namespace Maui.Controls.Sample.Issues
 {
-#if UITEST
-	[Category(UITestCategories.ManualReview)]
-	[Category(UITestCategories.CarouselView)]
-	[Category(UITestCategories.UwpIgnore)]
-#endif
-#if APP
+	// Issue9827 (src\ControlGallery\src\Issues.Shared\Issue9827.cs
 	[XamlCompilation(XamlCompilationOptions.Compile)]
-#endif
-	[Preserve(AllMembers = true)]
 	[Issue(IssueTracker.Github, 9827, "CarouselView doesn't update the CurrentItem on Swipe under strange condition", PlatformAffected.Android)]
-	public partial class Issue9827 : TestContentPage
+	public partial class CarouselViewUpdateCurrentItem : ContentPage
 	{
-		ViewModelIssue9827 ViewModel => BindingContext as ViewModelIssue9827;
-		public Issue9827()
+		public CarouselViewUpdateCurrentItem()
 		{
-#if APP
 			InitializeComponent();
-#endif
-		}
 
-		protected override void Init()
-		{
 			BindingContext = new ViewModelIssue9827();
 		}
+		
+		ViewModelIssue9827 ViewModel => BindingContext as ViewModelIssue9827;
 
 		protected override void OnAppearing()
 		{
 			if (ViewModel.Items.Count == 0)
 				ViewModel.LoadItemsCommand.Execute(null);
+
 			base.OnAppearing();
 		}
-
-#if UITEST
-		[PortTest]
-		[Test]
-		[Compatibility.UITests.FailsOnMauiAndroid]
-		public void Issue9827Test()
-		{
-			RunningApp.WaitForElement("Pos:0");
-			RunningApp.Tap(c => c.Marked("btnNext"));
-			RunningApp.WaitForElement("Item 1 with some additional text");
-			RunningApp.WaitForElement("Pos:1");
-		
-		}
-#endif
 	}
 
-	[Preserve(AllMembers = true)]
 	public class ViewModelIssue9827 : System.ComponentModel.INotifyPropertyChanged
 	{
 		public ViewModelIssue9827()
@@ -165,7 +133,6 @@ namespace Microsoft.Maui.Controls.ControlGallery.Issues
 		#endregion
 	}
 
-	[Preserve(AllMembers = true)]
 	public class ModelIssue9827 : System.ComponentModel.INotifyPropertyChanged
 	{
 		string _title;
