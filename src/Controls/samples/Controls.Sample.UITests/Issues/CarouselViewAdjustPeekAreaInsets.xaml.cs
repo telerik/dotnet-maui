@@ -1,32 +1,24 @@
 ﻿using System;
 using System.Collections.Generic;
-using Microsoft.Maui.Controls.CustomAttributes;
-using Microsoft.Maui.Controls.Internals;
+using Microsoft.Maui.Controls;
+using Microsoft.Maui.Controls.Xaml;
 using Microsoft.Maui.Graphics;
 
-#if UITEST
-using Xamarin.UITest;
-using NUnit.Framework;
-using Microsoft.Maui.Controls.Compatibility.UITests;
-#endif
-
-namespace Microsoft.Maui.Controls.ControlGallery.Issues
+namespace Maui.Controls.Sample.Issues
 {
-	[Preserve(AllMembers = true)]
-	[Issue(IssueTracker.Github, 13436,
+	// Issue13436 (src\ControlGallery\src\Issues.Shared\Issue13436.cs
+	[XamlCompilation(XamlCompilationOptions.Compile)]
+	[Issue(IssueTracker.None, 13436,
 		"[Bug] Java.Lang.IllegalArgumentException in CarouselView adjusting PeekAreaInsets in OnSizeAllocated using XF 5.0",
 		PlatformAffected.Android)]
-	public partial class Issue13436 : TestContentPage
+	public partial class CarouselViewAdjustPeekAreaInsets : ContentPage
 	{
-		public Issue13436()
-		{
-#if APP
-			InitializeComponent();
-#endif
-		}
-
-#if APP
 		double _prevWidth;
+
+		public CarouselViewAdjustPeekAreaInsets()
+		{
+			InitializeComponent();
+		}
 
 		protected override void OnAppearing()
 		{
@@ -67,22 +59,8 @@ namespace Microsoft.Maui.Controls.ControlGallery.Issues
 			_prevWidth = width;
 			Carousel.PeekAreaInsets = width * .15;
 		}
-#endif
-		protected override void Init()
-		{
-		}
-
-#if UITEST && __ANDROID__
-		[PortTest]
-		[Test]
-		public void ChangePeekAreaInsetsInOnSizeAllocatedTest()
-        {
-            RunningApp.WaitForElement("CarouselId");
-        }
-#endif
 	}
 
-	[Preserve(AllMembers = true)]
 	public class Issue13436Model
 	{
 		public string Name { get; set; }
