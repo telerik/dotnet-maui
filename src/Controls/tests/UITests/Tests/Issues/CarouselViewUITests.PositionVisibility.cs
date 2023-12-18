@@ -17,6 +17,9 @@ namespace Microsoft.Maui.AppiumTests.Issues
 		[Test]
 		public void Issue12848Test()
 		{
+			this.IgnoreIfPlatforms(new TestDevice[] { TestDevice.iOS, TestDevice.Mac, TestDevice.Windows },
+				"Android specific Test");
+
 			App.WaitForElement("TestCarouselView");
 			App.SwipeRightToLeft("TestCarouselView");
 			var position1 = App.FindElement("CarouselPosition").GetText();

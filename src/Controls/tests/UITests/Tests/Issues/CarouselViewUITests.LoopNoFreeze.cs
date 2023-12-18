@@ -21,6 +21,9 @@ namespace Microsoft.Maui.AppiumTests.Issues
 		[Test]
 		public void Issue12574Test()
 		{
+			this.IgnoreIfPlatforms(new TestDevice[] { TestDevice.Android, TestDevice.Mac, TestDevice.Windows },
+				"iOS specific Test");
+
 			App.WaitForNoElement("0 item");
 
 			var rect = App.FindElement(_carouselAutomationId).GetRect();
@@ -47,6 +50,9 @@ namespace Microsoft.Maui.AppiumTests.Issues
 		[Test]
 		public void RemoveItemsQuickly()
 		{
+			this.IgnoreIfPlatforms(new TestDevice[] { TestDevice.Android, TestDevice.Mac, TestDevice.Windows },	
+				"iOS specific Test");
+
 			App.WaitForNoElement("0 item");
 			App.Click(_btnRemoveAllAutomationId);
 

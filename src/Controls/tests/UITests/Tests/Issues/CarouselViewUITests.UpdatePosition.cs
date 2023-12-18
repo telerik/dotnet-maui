@@ -17,6 +17,9 @@ namespace Microsoft.Maui.AppiumTests.Issues
 		[Test]
 		public void CarouselViewPositionFromVisibilityChangeTest()
 		{
+			this.IgnoreIfPlatforms(new TestDevice[] { TestDevice.iOS, TestDevice.Mac, TestDevice.Windows },	
+				"Android specific Test");
+
 			App.WaitForElement("AppearButton");
 			App.Click("AppearButton");
 			App.WaitForNoElement("Item 4");

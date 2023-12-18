@@ -17,6 +17,9 @@ namespace Microsoft.Maui.AppiumTests.Issues
 		[Test]
 		public void Issue10300Test()
 		{
+			this.IgnoreIfPlatforms(new TestDevice[] { TestDevice.Android, TestDevice.Mac, TestDevice.Windows },	
+				"iOS specific Test");
+
 			App.Click("Add");
 			App.Click("Delete");
 			App.WaitForElement("Close");

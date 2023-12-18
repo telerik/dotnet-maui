@@ -17,6 +17,9 @@ namespace Microsoft.Maui.AppiumTests.Issues
 		[Test]
 		public void Issue9827Test()
 		{
+			this.IgnoreIfPlatforms(new TestDevice[] { TestDevice.iOS, TestDevice.Mac, TestDevice.Windows },
+				"Android specific Test");
+
 			App.WaitForNoElement("Pos:0");
 			App.Click("btnNext");
 			App.WaitForNoElement("Item 1 with some additional text");
