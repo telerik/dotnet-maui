@@ -18,7 +18,7 @@ namespace Microsoft.Maui.AppiumTests.Issues
 		public void Issue10300Test()
 		{
 			this.IgnoreIfPlatforms(new TestDevice[] { TestDevice.iOS },
-				"Currently fails on iOS; see https://github.com/dotnet/maui/issues/19487");
+				"Currently fails on iOS; see https://github.com/dotnet/maui/issues/19488");
 
 			this.IgnoreIfPlatforms(new TestDevice[] { TestDevice.Android, TestDevice.Mac, TestDevice.Windows },	
 				"iOS specific Test");
