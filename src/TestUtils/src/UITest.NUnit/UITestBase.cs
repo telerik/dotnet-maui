@@ -70,13 +70,13 @@ namespace UITest.Appium.NUnit
 			}
 			finally
 			{
-        var testOutcome = TestContext.CurrentContext.Result.Outcome;
-        if (testOutcome == ResultState.Error ||
-          testOutcome == ResultState.Failure)
-        {
-          SaveDeviceDiagnosticInfo();
-          SaveUIDiagnosticInfo();
-        }
+				var testOutcome = TestContext.CurrentContext.Result.Outcome;
+				if (testOutcome == ResultState.Error ||
+				  testOutcome == ResultState.Failure)
+				{
+					SaveDeviceDiagnosticInfo();
+					SaveUIDiagnosticInfo();
+				}
 			}
 		}
 
