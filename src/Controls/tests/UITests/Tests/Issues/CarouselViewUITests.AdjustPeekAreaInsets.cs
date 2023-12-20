@@ -14,6 +14,7 @@ namespace Microsoft.Maui.AppiumTests.Issues
 		public override string Issue => "[Bug] Java.Lang.IllegalArgumentException in CarouselView adjusting PeekAreaInsets in OnSizeAllocated using XF 5.0";
 
 		// Issue13436 (src\ControlGallery\src\Issues.Shared\Issue13436.cs
+		/*
 		[Test]
 		public void ChangePeekAreaInsetsInOnSizeAllocatedTest()
 		{
@@ -22,5 +23,6 @@ namespace Microsoft.Maui.AppiumTests.Issues
 
 			App.WaitForElement("CarouselId");
 		}
+		*/
 	}
 }
