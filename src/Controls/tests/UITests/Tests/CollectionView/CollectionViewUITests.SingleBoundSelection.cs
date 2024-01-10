@@ -11,8 +11,10 @@ namespace Microsoft.Maui.AppiumTests
 		{
 		}
 
+		/*
 		// SelectionShouldUpdateBinding (src\Compatibility\ControlGallery\src\Issues.Shared\CollectionViewBoundSingleSelection.cs)
 		[Test]
+		[Ignore("Click does not find CollectionView elements")]
 		[Description("Single Selection Binding")]
 		public void SelectionShouldUpdateBinding()
 		{
@@ -32,5 +34,6 @@ namespace Microsoft.Maui.AppiumTests
 			App.Click("Item 1");
 			App.WaitForNoElement("Selected: Item: 1");
 		}
+		*/
 	}
 }
