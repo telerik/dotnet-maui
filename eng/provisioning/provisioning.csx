@@ -3,10 +3,10 @@ if (IsMac)
 	ForceJavaCleanup();
 	MicrosoftOpenJdk ("11.0.13.8.1");
 	Item("https://download.mono-project.com/archive/6.12.0/macos-10-universal/MonoFramework-MDK-6.12.0.199.macos10.xamarin.universal.pkg");
-	AppleCodesignIdentity("Apple Development: Jonathan Dick (FJL7285DY2)", "https://dl.internalx.com/qa/code-signing-entitlements/components-mac-ios-certificate.p12");
-	AppleCodesignProfile("https://dl.internalx.com/qa/code-signing-entitlements/components-ios-provisioning.mobileprovision");
-	AppleCodesignProfile("https://dl.internalx.com/qa/code-signing-entitlements/components-mac-provisioning.mobileprovision");
-	AppleCodesignProfile("https://dl.internalx.com/qa/code-signing-entitlements/components-tvos-provisioning.mobileprovision");
+	AppleCodesignIdentity("Apple Development: Rui Marinho (G6DXESA369)", "https://dl.internalx.com/test/certs/maui-mac-ios-certificate");
+	AppleCodesignProfile("https://dl.internalx.com/test/certs/maui-ios-provisioning.mobileprovision");
+	AppleCodesignProfile("https://dl.internalx.com/test/certs/maui-mac-provisioning.mobileprovision");
+	AppleCodesignProfile("https://dl.internalx.com/test/certs/maui-tvos-provisioning.mobileprovision");
 }
 
 string ANDROID_API_SDKS = Environment.GetEnvironmentVariable ("ANDROID_API_SDKS");
