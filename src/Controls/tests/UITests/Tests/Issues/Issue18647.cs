@@ -12,8 +12,9 @@ namespace Microsoft.Maui.AppiumTests.Issues
 		}
 
 		public override string Issue => "Editor TextTransform property works as expected";
-		
+
 		[Test]
+		[Category(UITestCategories.Editor)]
 		public void EditorTextTransformWorks()
 		{
 			App.WaitForElement("WaitForStubControl");
