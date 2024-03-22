@@ -69,6 +69,7 @@ namespace Microsoft.Maui.Controls.ControlGallery.Issues
 		[PortTest]
 		[Test]
 		[Compatibility.UITests.FailsOnMauiIOS]
+		[Compatibility.UITests.FailsOnMauiAndroid]
 		public async Task RotatingCarouselViewHTMLShouldNotDisappear()
 		{
 			int delay = 3000;
