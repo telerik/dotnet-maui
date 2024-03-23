@@ -59,6 +59,11 @@ public class Issue19956: _IssuesUITest
         if (app is null)
             return;
 
+        app.Click("Entry2");
+        ScrollToBottom(app);
+        CheckForBottomEntry(app);
+        KeyboardScrolling.NextiOSKeyboardPress(app.Driver);
+
         app.Click("Entry5");
         ScrollToBottom(app);
         CheckForBottomEntry(app);

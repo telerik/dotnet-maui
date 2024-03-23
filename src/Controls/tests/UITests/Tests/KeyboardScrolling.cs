@@ -62,7 +62,7 @@ namespace Microsoft.Maui.AppiumTests
 		}
 
 		// will return a bool showing if the view is visible
-		static bool CheckIfViewAboveKeyboard(IApp app, string marked, bool isEditor)
+		internal static bool CheckIfViewAboveKeyboard(IApp app, string marked, bool isEditor)
 		{
 			var views = app.WaitForElement(marked);
 
