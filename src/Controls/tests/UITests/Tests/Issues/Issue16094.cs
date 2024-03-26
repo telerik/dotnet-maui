@@ -1,5 +1,6 @@
-﻿using Microsoft.Maui.Appium;
-using NUnit.Framework;
+﻿using NUnit.Framework;
+using UITest.Appium;
+using UITest.Core;
 
 namespace Microsoft.Maui.AppiumTests.Issues
 {
@@ -12,6 +13,7 @@ namespace Microsoft.Maui.AppiumTests.Issues
 		public override string Issue => "Shadows don't respect control shape";
 
 		[Test]
+		[Category(UITestCategories.Editor)]
 		public void Issue16094Test()
 		{
 			App.WaitForElement("EditorControl");

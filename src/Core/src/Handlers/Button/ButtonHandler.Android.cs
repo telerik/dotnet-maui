@@ -123,11 +123,13 @@ namespace Microsoft.Maui.Handlers
 
 		public override void PlatformArrange(Rect frame)
 		{
+			// The TextView might need an additional measurement pass at the final size
 			this.PrepareForTextViewArrange(frame);
+
 			base.PlatformArrange(frame);
 		}
 
-		bool OnTouch(IButton? button, AView? v, MotionEvent? e)
+		static bool OnTouch(IButton? button, AView? v, MotionEvent? e)
 		{
 			switch (e?.ActionMasked)
 			{
@@ -143,7 +145,7 @@ namespace Microsoft.Maui.Handlers
 			return false;
 		}
 
-		void OnClick(IButton? button, AView? v)
+		static void OnClick(IButton? button, AView? v)
 		{
 			button?.Clicked();
 		}
@@ -156,7 +158,7 @@ namespace Microsoft.Maui.Handlers
 
 		void OnPlatformViewLayoutChange(object? sender, AView.LayoutChangeEventArgs e)
 		{
-			if (sender is MaterialButton platformView && VirtualView != null)
+			if (sender is MaterialButton platformView && VirtualView is not null)
 				platformView.UpdateBackground(VirtualView);
 		}
 
@@ -166,7 +168,7 @@ namespace Microsoft.Maui.Handlers
 
 			public void OnClick(AView? v)
 			{
-				Handler?.OnClick(Handler?.VirtualView, v);
+				ButtonHandler.OnClick(Handler?.VirtualView, v);
 			}
 		}
 
@@ -175,7 +177,7 @@ namespace Microsoft.Maui.Handlers
 			public ButtonHandler? Handler { get; set; }
 
 			public bool OnTouch(AView? v, global::Android.Views.MotionEvent? e) =>
-				Handler?.OnTouch(Handler?.VirtualView, v, e) ?? false;
+				ButtonHandler.OnTouch(Handler?.VirtualView, v, e);
 		}
 
 		partial class ButtonImageSourcePartSetter
@@ -185,7 +187,9 @@ namespace Microsoft.Maui.Handlers
 				if (Handler?.PlatformView is not MaterialButton button)
 					return;
 
-				button.Icon = platformImage;
+				button.Icon = platformImage is null
+					? null
+					: new MauiMaterialButton.MauiResizableDrawable(platformImage);
 			}
 		}
 	}

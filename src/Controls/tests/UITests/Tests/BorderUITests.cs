@@ -1,11 +1,12 @@
-﻿using Microsoft.Maui.Appium;
-using NUnit.Framework;
+﻿using NUnit.Framework;
+using UITest.Appium;
+using UITest.Core;
 
 namespace Microsoft.Maui.AppiumTests
 {
-	public class BorderUITests : UITestBase
+	public class BorderUITests : UITest
 	{
-		const string BorderGallery = "* marked:'Border Gallery'";
+		const string BorderGallery = "Border Gallery";
 
 		public BorderUITests(TestDevice device)
 			: base(device)
@@ -21,16 +22,17 @@ namespace Microsoft.Maui.AppiumTests
 		protected override void FixtureTeardown()
 		{
 			base.FixtureTeardown();
-			App.NavigateBack();
+			this.Back();
 		}
 
 		// TODO: Enable this as a test once fully working
 		//[Test]
+		//[Category(UITestCategories.Border)]
 		public void BordersWithVariousShapes()
 		{
 			App.WaitForElement("TargetView");
 			App.EnterText("TargetView", "BordersWithVariousShapes");
-			App.Tap("GoButton");
+			App.Click("GoButton");
 
 			App.WaitForElement("WaitForStubControl");
 

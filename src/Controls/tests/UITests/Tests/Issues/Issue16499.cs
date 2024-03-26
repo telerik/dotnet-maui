@@ -1,8 +1,6 @@
-﻿using System.Drawing;
-using Microsoft.Maui.Appium;
-using NUnit.Framework;
-using OpenQA.Selenium.Appium.MultiTouch;
-using TestUtils.Appium.UITests;
+﻿using NUnit.Framework;
+using UITest.Appium;
+using UITest.Core;
 
 namespace Microsoft.Maui.AppiumTests.Issues
 {
@@ -15,6 +13,7 @@ namespace Microsoft.Maui.AppiumTests.Issues
 		public override string Issue => "Crash when using NavigationPage.TitleView and Restarting App";
 
 		[Test]
+		[Category(UITestCategories.Navigation)]
 		public void AppDoesntCrashWhenReusingSameTitleView()
 		{
 			App.WaitForElement("SuccessLabel");

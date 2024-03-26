@@ -5,8 +5,8 @@
 using System.Security.Cryptography;
 using System.Security.Cryptography.X509Certificates;
 
-const string defaultVersion = "10.0.19041";
-const string dotnetVersion = "net7.0";
+const string defaultVersion = "10.0.19041.0";
+const string dotnetVersion = "net8.0";
 
 // required
 FilePath PROJECT = Argument("project", EnvironmentVariable("WINDOWS_TEST_PROJECT") ?? DEFAULT_PROJECT);
@@ -17,6 +17,7 @@ var PACKAGEID = Argument("packageid", EnvironmentVariable("WINDOWS_TEST_PACKAGE_
 
 // optional
 var DOTNET_PATH = Argument("dotnet-path", EnvironmentVariable("DOTNET_PATH"));
+var DOTNET_ROOT = Argument("dotnet-root", EnvironmentVariable("DOTNET_ROOT"));
 var TARGET_FRAMEWORK = Argument("tfm", EnvironmentVariable("TARGET_FRAMEWORK") ?? $"{dotnetVersion}-windows{defaultVersion}");
 var BINLOG_ARG = Argument("binlog", EnvironmentVariable("WINDOWS_TEST_BINLOG") ?? "");
 DirectoryPath BINLOG_DIR = string.IsNullOrEmpty(BINLOG_ARG) && !string.IsNullOrEmpty(PROJECT.FullPath) ? PROJECT.GetDirectory() : BINLOG_ARG;
@@ -139,12 +140,14 @@ Task("Build")
 	var name = System.IO.Path.GetFileNameWithoutExtension(PROJECT.FullPath);
 	var binlog = $"{BINLOG_DIR}/{name}-{CONFIGURATION}-windows.binlog";
 
-	SetDotNetEnvironmentVariables(DOTNET_PATH);
+	var localDotnetRoot = MakeAbsolute(Directory("../../bin/dotnet/"));
+	Information("new dotnet root: {0}", localDotnetRoot);
 
-	var dd = MakeAbsolute(Directory("../../bin/dotnet/"));
-	Information("DOTNET_PATH: {0}", dd);
+	DOTNET_ROOT = localDotnetRoot.ToString();
 
-	var toolPath = $"{dd}/dotnet.exe";
+	SetDotNetEnvironmentVariables(DOTNET_ROOT);
+
+	var toolPath = $"{localDotnetRoot}/dotnet.exe";
 
 	Information("toolPath: {0}", toolPath);
 
@@ -319,7 +322,8 @@ Task("Test")
 	// and if the categories we expected to run match the test result files
 	if (isControlsProjectTestRun)
 	{
-		var expectedCategoriesRanCount = System.IO.File.ReadAllLines(testsToRunFile).Length-1;
+		var expectedCategories = System.IO.File.ReadAllLines(testsToRunFile);
+		var expectedCategoriesRanCount = expectedCategories.Length;
 		var actualResultFileCount = System.IO.Directory.GetFiles(testResultsPath, "TestResults-*.xml").Length;
 
 		while (actualResultFileCount < expectedCategoriesRanCount) {
@@ -341,6 +345,20 @@ Task("Test")
 		// If it's less, throw an exception to fail the pipeline.
 		if (actualResultFileCount < expectedCategoriesRanCount)
 		{
+			// Grab the category name from the file name
+			// Ex: "TestResults-com_microsoft_maui_controls_devicetests_Frame.xml" -> "Frame"
+			var actualFiles = System.IO.Directory.GetFiles(testResultsPath, "TestResults-*.xml");
+			var actualCategories = actualFiles.Select(x => x.Substring(0, x.Length - 4)   // Remove ".xml"
+					 										.Split('_').Last()).ToList();
+
+			foreach (var category in expectedCategories)
+			{
+				if (!actualCategories.Contains(category))
+				{
+					Error($"Error: missing test file result for {category}");
+				}
+			}
+
 			throw new Exception($"Expected test result files: {expectedCategoriesRanCount}, actual files: {actualResultFileCount}, some process(es) might have crashed.");
 		}
 	}
@@ -422,18 +440,23 @@ Task("uitest")
 	var name = System.IO.Path.GetFileNameWithoutExtension(PROJECT.FullPath);
 	var binlog = $"{BINLOG_DIR}/{name}-{CONFIGURATION}-windows.binlog";
 
-	var dd = MakeAbsolute(Directory("../../bin/dotnet/"));
-	Information("DOTNET_PATH: {0}", dd);
+	Information("old dotnet root: {0}", DOTNET_ROOT);
+	Information("old dotnet path: {0}", DOTNET_PATH);
 
-	var toolPath = $"{dd}/dotnet.exe";
+	var localDotnetRoot = MakeAbsolute(Directory("../../bin/dotnet/"));
+	Information("new dotnet root: {0}", localDotnetRoot);
 
-	Information("toolPath: {0}", toolPath);
+	DOTNET_ROOT = localDotnetRoot.ToString();
 
-	SetDotNetEnvironmentVariables(dd.FullPath);
+	var localToolPath = $"{localDotnetRoot}/dotnet.exe";
+
+	Information("new dotnet toolPath: {0}", localToolPath);
+
+	SetDotNetEnvironmentVariables(DOTNET_ROOT);
 
 	DotNetBuild(PROJECT.FullPath, new DotNetBuildSettings {
 			Configuration = CONFIGURATION,
-			ToolPath = toolPath,
+			ToolPath = localToolPath,
 			ArgumentCustomization = args => args
 				.Append("/p:ExtraDefineConstants=WINTEST")
 				.Append("/bl:" + binlog)
@@ -445,7 +468,7 @@ Task("uitest")
 	SetEnvironmentVariable("APPIUM_LOG_FILE", $"{BINLOG_DIR}/appium_windows.log");
 
 	Information("Run UITests project {0}",PROJECT.FullPath);
-	RunTestWithLocalDotNet(PROJECT.FullPath, CONFIGURATION, toolPath, noBuild: true, resultsFileNameWithoutExtension: $"{name}-{CONFIGURATION}-windows");
+	RunTestWithLocalDotNet(PROJECT.FullPath, CONFIGURATION, localToolPath, noBuild: true, resultsFileNameWithoutExtension: $"{name}-{CONFIGURATION}-windows");
 });
 
 RunTarget(TARGET);

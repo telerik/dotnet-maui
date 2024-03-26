@@ -1,5 +1,6 @@
-﻿using Microsoft.Maui.Appium;
-using NUnit.Framework;
+﻿using NUnit.Framework;
+using UITest.Appium;
+using UITest.Core;
 
 namespace Microsoft.Maui.AppiumTests.Issues
 {
@@ -10,27 +11,29 @@ namespace Microsoft.Maui.AppiumTests.Issues
 		public override string Issue => "Alerts Open on top of current presented view";
 
 		[Test]
+		[Category(UITestCategories.DisplayAlert)]
 		public void OpenAlertWithModals()
 		{
-			UITestContext.IgnoreIfPlatforms(new[]
+			this.IgnoreIfPlatforms(new[]
 			{
 				TestDevice.Mac, TestDevice.Windows, TestDevice.Android
 			});
 
-			App.Tap("OpenAlertWithModals");
-			App.Tap("Cancel");
+			App.WaitForElement("OpenAlertWithModals").Click();
+			App.WaitForElement("Cancel").Click();
 		}
 
 		[Test]
+		[Category(UITestCategories.DisplayAlert)]
 		public void OpenAlertWithNewUIWindow()
 		{
-			UITestContext.IgnoreIfPlatforms(new[]
+			this.IgnoreIfPlatforms(new[]
 			{
 				TestDevice.Mac, TestDevice.Windows, TestDevice.Android
 			});
 
-			App.Tap("OpenAlertWithNewUIWindow");
-			App.Tap("Cancel");
+			App.WaitForElement("OpenAlertWithNewUIWindow").Click();
+			App.WaitForElement("Cancel").Click();
 		}
 	}
 }

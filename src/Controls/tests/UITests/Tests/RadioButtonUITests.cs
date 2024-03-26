@@ -1,11 +1,11 @@
-﻿using Microsoft.Maui.Appium;
-using NUnit.Framework;
+﻿using NUnit.Framework;
+using UITest.Core;
 
 namespace Microsoft.Maui.AppiumTests
 {
 	public class RadioButtonUITests : _ViewUITests
 	{
-		public const string RadioButtonGallery = "* marked:'RadioButton Gallery'";
+		public const string RadioButtonGallery = "RadioButton Gallery";
 
 		public RadioButtonUITests(TestDevice device)
 			: base(device)
@@ -18,6 +18,7 @@ namespace Microsoft.Maui.AppiumTests
 		}
 
 		[Test]
+		[Category(UITestCategories.RadioButton)]
 		public override void _IsEnabled()
 		{
 			if (Device == TestDevice.Mac ||

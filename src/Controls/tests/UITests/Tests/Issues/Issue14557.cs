@@ -1,6 +1,6 @@
-﻿using Microsoft.Maui.Appium;
-using Microsoft.Maui.AppiumTests;
-using NUnit.Framework;
+﻿using NUnit.Framework;
+using UITest.Appium;
+using UITest.Core;
 
 namespace Microsoft.Maui.AppiumTests.Issues
 {
@@ -10,12 +10,13 @@ namespace Microsoft.Maui.AppiumTests.Issues
 		public override string Issue => "CollectionView header and footer not displaying on Windows";
 
 		[Test]
+		[Category(UITestCategories.CollectionView)]
 		public void HeaderAndFooterRender()
 		{
 			App.WaitForElement("collectionView");
 
-			var headerText = App.Query("headerLabel").First().Text;
-			var footerText = App.Query("footerLabel").First().Text;
+			var headerText = App.FindElement("headerLabel").GetText();
+			var footerText = App.FindElement("footerLabel").GetText();
 
 			Assert.IsNotEmpty(headerText);
 			Assert.IsNotEmpty(footerText);

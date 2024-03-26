@@ -1,8 +1,6 @@
-﻿using System.Drawing;
-using Microsoft.Maui.Appium;
-using NUnit.Framework;
-using OpenQA.Selenium.Appium.MultiTouch;
-using TestUtils.Appium.UITests;
+﻿using NUnit.Framework;
+using UITest.Appium;
+using UITest.Core;
 
 namespace Microsoft.Maui.AppiumTests.Issues
 {
@@ -15,9 +13,11 @@ namespace Microsoft.Maui.AppiumTests.Issues
 		public override string Issue => "Crash using Pinvoke.SetParent to create Window as Child";
 
 		[Test]
+  		[Ignore("This broke with WinAPPSDK 1.4 and we currently don't have an alternative https://github.com/dotnet/maui/issues/20253")]
+		[Category(UITestCategories.Window)]
 		public void AppDoesntCrashWhenOpeningWinUIWindowParentedToCurrentWindow()
 		{
-			UITestContext.IgnoreIfPlatforms(new[]
+			this.IgnoreIfPlatforms(new[]
 			{
 				TestDevice.Mac, TestDevice.iOS, TestDevice.Android
 			});
