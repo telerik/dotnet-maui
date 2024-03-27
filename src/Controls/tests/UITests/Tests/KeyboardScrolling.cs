@@ -76,7 +76,7 @@ namespace Microsoft.Maui.AppiumTests
 
 			var testApp = app as AppiumApp;
 			var keyboardPositionNullable = FindiOSKeyboardLocation(testApp?.Driver);
-			Assert.NotNull(keyboardPositionNullable);
+			Assert.NotNull(keyboardPositionNullable, "Could not find the keyboard location.");
 
 			var keyboardPosition = (System.Drawing.Point)keyboardPositionNullable!;
 			if (isEditor)
@@ -87,7 +87,7 @@ namespace Microsoft.Maui.AppiumTests
 				keyboardPosition.Y -= defaultSizeAccessoryView;
 
 			}
-			Assert.Less(rect.CenterY(), keyboardPosition.Y);
+			Assert.Less(rect.CenterY(), keyboardPosition.Y, "The view is not above the keyboard.");
 
 			return true;
 		}
