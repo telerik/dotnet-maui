@@ -61,7 +61,8 @@ namespace Microsoft.Maui.DeviceTests.Stubs
 		{
 			if (Window is not null)
 			{
-				if (!Window.IsDestroyed)
+				bool isDestroyed = (bool)typeof(Window).GetProperty("IsDestroyed", System.Reflection.BindingFlags.Instance | System.Reflection.BindingFlags.NonPublic).GetValue(Window);
+				if (!isDestroyed)
 					_window.Destroying();
 			}
 			else
@@ -87,7 +88,8 @@ namespace Microsoft.Maui.DeviceTests.Stubs
 			{
 				if (Window is not null)
 				{
-					if (!Window.IsActivated)
+					bool isActivated = (bool)typeof(Window).GetProperty("IsActivated", System.Reflection.BindingFlags.Instance | System.Reflection.BindingFlags.NonPublic).GetValue(Window);
+					if (!isActivated)
 						_window.Activated();
 				}
 				else

@@ -1,4 +1,5 @@
 ﻿#nullable enable
+#if WINDOWS
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
@@ -15,6 +16,7 @@ using WBinding = Microsoft.UI.Xaml.Data.Binding;
 using WBindingExpression = Microsoft.UI.Xaml.Data.BindingExpression;
 using WBrush = Microsoft.UI.Xaml.Media.Brush;
 using WPoint = Windows.Foundation.Point;
+using ActionDisposable = Microsoft.Maui.DeviceTests.ActionDisposable;
 
 namespace Microsoft.Maui.Platform
 {
@@ -403,3 +405,4 @@ namespace Microsoft.Maui.Platform
 		}
 	}
 }
+#endif

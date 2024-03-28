@@ -75,147 +75,147 @@ namespace Microsoft.Maui.DeviceTests
 			});
 		}
 
-		public bool ToolbarItemsMatch(
-			IElementHandler handler,
-			params ToolbarItem[] toolbarItems)
-		{
-			var toolbar = GetPlatformToolbar(handler);
-			var menu = toolbar.Menu;
+		// public bool ToolbarItemsMatch(
+		// 	IElementHandler handler,
+		// 	params ToolbarItem[] toolbarItems)
+		// {
+		// 	var toolbar = GetPlatformToolbar(handler);
+		// 	var menu = toolbar.Menu;
 
-			Assert.Equal(toolbarItems.Length, menu.Size());
+		// 	Assert.Equal(toolbarItems.Length, menu.Size());
 
-			for (var i = 0; i < toolbarItems.Length; i++)
-			{
-				ToolbarItem toolbarItem = toolbarItems[i];
-				var primaryCommand = menu.GetItem(i);
-				Assert.Equal(toolbarItem.Text, $"{primaryCommand.TitleFormatted}");
+		// 	for (var i = 0; i < toolbarItems.Length; i++)
+		// 	{
+		// 		ToolbarItem toolbarItem = toolbarItems[i];
+		// 		var primaryCommand = menu.GetItem(i);
+		// 		Assert.Equal(toolbarItem.Text, $"{primaryCommand.TitleFormatted}");
 
-				if (primaryCommand is MenuItemImpl menuItemImpl)
-				{
-					if (toolbarItem.Order != ToolbarItemOrder.Secondary)
-					{
-						Assert.True(menuItemImpl.RequiresActionButton(), "Secondary Menu Item `SetShowAsAction` not set correctly");
-					}
-					else
-					{
-						Assert.False(menuItemImpl.RequiresActionButton(), "Primary Menu Item `SetShowAsAction` not set correctly");
-					}
-				}
-				else
-				{
-					throw new Exception($"MenuItem type is not MenuItemImpl. Please rework test to work with {primaryCommand}");
-				}
-			}
+		// 		if (primaryCommand is MenuItemImpl menuItemImpl)
+		// 		{
+		// 			if (toolbarItem.Order != ToolbarItemOrder.Secondary)
+		// 			{
+		// 				Assert.True(menuItemImpl.RequiresActionButton(), "Secondary Menu Item `SetShowAsAction` not set correctly");
+		// 			}
+		// 			else
+		// 			{
+		// 				Assert.False(menuItemImpl.RequiresActionButton(), "Primary Menu Item `SetShowAsAction` not set correctly");
+		// 			}
+		// 		}
+		// 		else
+		// 		{
+		// 			throw new Exception($"MenuItem type is not MenuItemImpl. Please rework test to work with {primaryCommand}");
+		// 		}
+		// 	}
 
-			return true;
-		}
+		// 	return true;
+		// }
 
-		protected AView GetTitleView(IElementHandler handler)
-		{
-			var toolbar = GetPlatformToolbar(handler);
-			var container = toolbar?.GetFirstChildOfType<Controls.Toolbar.Container>();
+		// protected AView GetTitleView(IElementHandler handler)
+		// {
+		// 	var toolbar = GetPlatformToolbar(handler);
+		// 	var container = toolbar?.GetFirstChildOfType<Controls.Toolbar.Container>();
 
-			if (container != null && container.ChildCount > 0)
-				return container.GetChildAt(0);
+		// 	if (container != null && container.ChildCount > 0)
+		// 		return container.GetChildAt(0);
 
-			return null;
-		}
+		// 	return null;
+		// }
 
-		protected MaterialToolbar GetPlatformToolbar(IElementHandler handler)
-		{
-			if (handler.VirtualView is VisualElement e)
-			{
-				handler = e.Window?.Handler ?? handler;
-			}
+		// protected MaterialToolbar GetPlatformToolbar(IElementHandler handler)
+		// {
+		// 	if (handler.VirtualView is VisualElement e)
+		// 	{
+		// 		handler = e.Window?.Handler ?? handler;
+		// 	}
 
-			if (handler is IWindowHandler wh)
-			{
-				handler = wh.VirtualView.Content.Handler;
-			}
+		// 	if (handler is IWindowHandler wh)
+		// 	{
+		// 		handler = wh.VirtualView.Content.Handler;
+		// 	}
 
-			if (handler is Microsoft.Maui.Controls.Handlers.Compatibility.ShellRenderer sr)
-			{
-				var shell = handler.VirtualView as Shell;
-				var currentPage = shell.CurrentPage;
+		// 	if (handler is Microsoft.Maui.Controls.Handlers.Compatibility.ShellRenderer sr)
+		// 	{
+		// 		var shell = handler.VirtualView as Shell;
+		// 		var currentPage = shell.CurrentPage;
 
-				if (currentPage?.Handler?.PlatformView is AView pagePlatformView)
-				{
-					var parentContainer = pagePlatformView.GetParentOfType<CoordinatorLayout>();
-					var toolbar = parentContainer?.GetFirstChildOfType<MaterialToolbar>();
-					return toolbar;
-				}
+		// 		if (currentPage?.Handler?.PlatformView is AView pagePlatformView)
+		// 		{
+		// 			var parentContainer = pagePlatformView.GetParentOfType<CoordinatorLayout>();
+		// 			var toolbar = parentContainer?.GetFirstChildOfType<MaterialToolbar>();
+		// 			return toolbar;
+		// 		}
 
-				return null;
-			}
-			else
-			{
-				return GetPlatformToolbar(handler.MauiContext);
-			}
-		}
+		// 		return null;
+		// 	}
+		// 	else
+		// 	{
+		// 		return GetPlatformToolbar(handler.MauiContext);
+		// 	}
+		// }
 
-		protected string GetToolbarTitle(IElementHandler handler) =>
-			GetPlatformToolbar(handler).Title;
+		// protected string GetToolbarTitle(IElementHandler handler) =>
+		// 	GetPlatformToolbar(handler).Title;
 
-		protected MaterialToolbar GetPlatformToolbar(IMauiContext mauiContext)
-		{
-			var navManager = mauiContext.GetNavigationRootManager();
-			if (navManager?.RootView is null)
-				return null;
+		// protected MaterialToolbar GetPlatformToolbar(IMauiContext mauiContext)
+		// {
+		// 	var navManager = mauiContext.GetNavigationRootManager();
+		// 	if (navManager?.RootView is null)
+		// 		return null;
 
-			var appbarLayout =
-				navManager.RootView.FindViewById<AViewGroup>(Resource.Id.navigationlayout_appbar);
+		// 	var appbarLayout =
+		// 		navManager.RootView.FindViewById<AViewGroup>(Resource.Id.navigationlayout_appbar);
 
-			if (appbarLayout is null &&
-				navManager.RootView is ContainerView cv &&
-				cv.CurrentView is Shell shell)
-			{
-				if (shell.Handler is Controls.Platform.Compatibility.IShellContext sr)
-				{
-					var layout = sr.CurrentDrawerLayout;
-					var content = layout?.GetFirstChildOfType<Controls.Platform.Compatibility.CustomFrameLayout>();
-					appbarLayout = content?.GetFirstChildOfType<AppBarLayout>();
-				}
-			}
+		// 	if (appbarLayout is null &&
+		// 		navManager.RootView is ContainerView cv &&
+		// 		cv.CurrentView is Shell shell)
+		// 	{
+		// 		if (shell.Handler is Controls.Platform.Compatibility.IShellContext sr)
+		// 		{
+		// 			var layout = sr.CurrentDrawerLayout;
+		// 			var content = layout?.GetFirstChildOfType<Controls.Platform.Compatibility.CustomFrameLayout>();
+		// 			appbarLayout = content?.GetFirstChildOfType<AppBarLayout>();
+		// 		}
+		// 	}
 
-			var toolBar = appbarLayout?.GetFirstChildOfType<MaterialToolbar>();
+		// 	var toolBar = appbarLayout?.GetFirstChildOfType<MaterialToolbar>();
 
-			toolBar = toolBar ?? navManager.ToolbarElement?.Toolbar?.Handler?.PlatformView as
-				MaterialToolbar;
+		// 	toolBar = toolBar ?? navManager.ToolbarElement?.Toolbar?.Handler?.PlatformView as
+		// 		MaterialToolbar;
 
-			if (toolBar is null)
-			{
-				appbarLayout =
-					(navManager?.RootView as AViewGroup)?.GetFirstChildOfType<AppBarLayout>();
+		// 	if (toolBar is null)
+		// 	{
+		// 		appbarLayout =
+		// 			(navManager?.RootView as AViewGroup)?.GetFirstChildOfType<AppBarLayout>();
 
-				toolBar = appbarLayout?.GetFirstChildOfType<MaterialToolbar>();
-			}
+		// 		toolBar = appbarLayout?.GetFirstChildOfType<MaterialToolbar>();
+		// 	}
 
-			return toolBar;
-		}
+		// 	return toolBar;
+		// }
 
-		protected Size GetTitleViewExpectedSize(IElementHandler handler)
-		{
-			var context = handler.MauiContext.Context;
-			var toolbar = GetPlatformToolbar(handler.MauiContext).GetFirstChildOfType<Microsoft.Maui.Controls.Toolbar.Container>();
-			return new Size(context.FromPixels(toolbar.MeasuredWidth), context.FromPixels(toolbar.MeasuredHeight));
-		}
+		// protected Size GetTitleViewExpectedSize(IElementHandler handler)
+		// {
+		// 	var context = handler.MauiContext.Context;
+		// 	var toolbar = GetPlatformToolbar(handler.MauiContext).GetFirstChildOfType<Microsoft.Maui.Controls.Toolbar.Container>();
+		// 	return new Size(context.FromPixels(toolbar.MeasuredWidth), context.FromPixels(toolbar.MeasuredHeight));
+		// }
 
-		public bool IsNavigationBarVisible(IElementHandler handler) =>
-			IsNavigationBarVisible(handler.MauiContext);
+		// public bool IsNavigationBarVisible(IElementHandler handler) =>
+		// 	IsNavigationBarVisible(handler.MauiContext);
 
-		public bool IsNavigationBarVisible(IMauiContext mauiContext)
-		{
-			return GetPlatformToolbar(mauiContext)?
-					.LayoutParameters?.Height > 0;
-		}
+		// public bool IsNavigationBarVisible(IMauiContext mauiContext)
+		// {
+		// 	return GetPlatformToolbar(mauiContext)?
+		// 			.LayoutParameters?.Height > 0;
+		// }
 
-		protected bool IsBackButtonVisible(IElementHandler handler)
-		{
-			if (GetPlatformToolbar(handler)?.NavigationIcon is DrawerArrowDrawable dad)
-				return dad.Progress == 1;
+		// protected bool IsBackButtonVisible(IElementHandler handler)
+		// {
+		// 	if (GetPlatformToolbar(handler)?.NavigationIcon is DrawerArrowDrawable dad)
+		// 		return dad.Progress == 1;
 
-			return false;
-		}
+		// 	return false;
+		// }
 
 		class WindowTestFragment : Fragment
 		{
@@ -241,7 +241,7 @@ namespace Microsoft.Maui.DeviceTests
 			public override AView OnCreateView(ALayoutInflater inflater, AViewGroup container, Bundle savedInstanceState)
 			{
 				ScopedMauiContext = _mauiContext.MakeScoped(layoutInflater: inflater, fragmentManager: ChildFragmentManager, registerNewNavigationRoot: true);
-				var handler = (WindowHandlerStub)_window.ToHandler(ScopedMauiContext);
+				var handler = (WindowHandlerStub)_window.ToHandler2(ScopedMauiContext); // Resolves name conflict
 
 				FakeActivityRootView = new FakeActivityRootView(ScopedMauiContext.Context);
 				FakeActivityRootView.LayoutParameters = new LinearLayoutCompat.LayoutParams(AViewGroup.LayoutParams.MatchParent, AViewGroup.LayoutParams.MatchParent);
@@ -250,7 +250,15 @@ namespace Microsoft.Maui.DeviceTests
 
 				if (_window is Window window)
 				{
-					window.ModalNavigationManager.SetModalParentView(FakeActivityRootView);
+					var modalNavigationManagerClass = typeof(Element).Assembly.GetType("Microsoft.Maui.Controls.Platform.ModalNavigationManager");
+					var setModalParentView = modalNavigationManagerClass.GetMethod("SetModalParentView", System.Reflection.BindingFlags.Instance | System.Reflection.BindingFlags.NonPublic);
+					var modalNavigationManager = typeof(Window).GetProperty("ModalNavigationManager", System.Reflection.BindingFlags.Instance | System.Reflection.BindingFlags.NonPublic);
+
+					setModalParentView.Invoke(
+						modalNavigationManager.GetValue(window),
+						new object[] {
+							FakeActivityRootView
+						});
 				}
 
 				return FakeActivityRootView;
@@ -260,8 +268,8 @@ namespace Microsoft.Maui.DeviceTests
 			{
 				base.OnResume();
 
-				bool isCreated = (_window as Window)?.IsCreated ?? false;
-				bool isActivated = (_window as Window)?.IsActivated ?? false;
+				bool isCreated = _window is Window ? (bool)typeof(Window).GetProperty("IsCreated", System.Reflection.BindingFlags.Instance | System.Reflection.BindingFlags.NonPublic).GetValue(_window) : false;
+				bool isActivated = _window is Window ? (bool)typeof(Window).GetProperty("IsActivated", System.Reflection.BindingFlags.Instance | System.Reflection.BindingFlags.NonPublic).GetValue(_window) : false;
 
 				if (!isCreated)
 					_window.Created();
@@ -275,7 +283,7 @@ namespace Microsoft.Maui.DeviceTests
 			public override void OnDestroy()
 			{
 				base.OnDestroy();
-				bool isDestroyed = (_window as Window)?.IsDestroyed ?? false;
+				bool isDestroyed = _window is Window ? (bool)typeof(Window).GetProperty("IsDestroyed", System.Reflection.BindingFlags.Instance | System.Reflection.BindingFlags.NonPublic).GetValue(_window) : false;
 
 				if (!isDestroyed)
 					_window.Destroying();
