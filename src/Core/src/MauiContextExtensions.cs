@@ -4,6 +4,8 @@ using Microsoft.Maui.Dispatching;
 using Microsoft.Maui.Devices;
 using Microsoft.Maui.Hosting;
 using Microsoft.Maui.ApplicationModel;
+using System;
+
 
 #if WINDOWS
 using NativeApplication = Microsoft.UI.Xaml.Application;
@@ -32,14 +34,32 @@ namespace Microsoft.Maui
 		public static IDispatcher GetDispatcher(this IMauiContext mauiContext) =>
 			mauiContext.Services.GetRequiredService<IDispatcher>();
 
-		public static IDispatcher? GetOptionalDispatcher(this IMauiContext mauiContext) =>
+		public static IDispatcher GetOptionalDispatcher(this IMauiContext mauiContext) =>
 			mauiContext.Services.GetService<IDispatcher>();
+
+		// Reflection shortcut
+		static void AddWeakSpecific<TService>(IServiceProvider services, TService instance)
+			where TService : class
+		{
+			var type = services.GetType();
+			var addSpecific = type.GetMethod("AddSpecific", System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.Instance);
+			addSpecific.Invoke(services, new object[] { typeof(TService), static (object state) => (object)((WeakReference)state).Target, new WeakReference(instance) });
+		}
+
+		// Reflection shortcut
+		static void AddSpecific<TService>(IServiceProvider services, TService instance)
+			where TService : class
+		{
+			var type = services.GetType();
+			var addSpecific = type.GetMethod("AddSpecific", System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.Instance);
+			addSpecific.Invoke(services, new object[] { typeof(TService), static (object state) => (object)state, instance });
+		}
 
 		public static IMauiContext MakeApplicationScope(this IMauiContext mauiContext, NativeApplication platformApplication)
 		{
 			var scopedContext = new MauiContext(mauiContext.Services);
 
-			scopedContext.AddSpecific(platformApplication);
+			AddSpecific(scopedContext.Services, platformApplication);
 
 			return scopedContext;
 		}
@@ -56,13 +76,13 @@ namespace Microsoft.Maui
 			var scopedContext = new MauiContext(scope.ServiceProvider);
 #endif
 
-			scopedContext.AddWeakSpecific(platformWindow);
+			AddWeakSpecific(scopedContext.Services, platformWindow);
 
 #if ANDROID
-			scopedContext.AddSpecific(new NavigationRootManager(scopedContext));
+			AddSpecific(scopedContext.Services, new NavigationRootManager(scopedContext));
 #endif
 #if WINDOWS
-			scopedContext.AddSpecific(new NavigationRootManager(platformWindow));
+			AddSpecific(scopedContext.Services, new NavigationRootManager(platformWindow));
 #endif
 
 			// Initialize any window-scoped services, for example the window dispatchers and animation tickers

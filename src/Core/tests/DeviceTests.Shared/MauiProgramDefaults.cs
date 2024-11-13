@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Maui.Controls.Hosting;
+using Microsoft.Maui.Dispatching;
 using Microsoft.Maui.Hosting;
 using Microsoft.Maui.LifecycleEvents;
 using Microsoft.Maui.TestUtils.DeviceTests.Runners;
@@ -74,6 +76,12 @@ namespace Microsoft.Maui.DeviceTests
 				ValidateOnBuild = true,
 				ValidateScopes = true,
 			}));
+
+			appBuilder.ConfigureDispatching();
+
+			// Running from VisualStudio on Windows attaches surface tap for hot reload and requires IDispatcher,
+			// either our setup has a service mismatch in the Utils.DeivceTests, or there is a way to run without hot reload on Windows.
+			appBuilder.Services.AddSingleton<IDispatcher>(service => service.GetRequiredService<IDispatcherProvider>().GetForCurrentThread());
 
 			var mauiApp = appBuilder.Build();
 

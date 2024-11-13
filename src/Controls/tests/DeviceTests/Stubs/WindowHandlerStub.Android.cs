@@ -22,7 +22,8 @@ namespace Microsoft.Maui.DeviceTests.Stubs
 		void UpdateContent()
 		{
 			_ = MauiContext ?? throw new InvalidOperationException($"{nameof(MauiContext)} should have been set by base class.");
-			AView platformView = WindowHandler.CreateRootViewFromContent(this, VirtualView);
+
+			AView platformView = (AView)typeof(WindowHandler).GetMethod("CreateRootViewFromContent", System.Reflection.BindingFlags.Static | System.Reflection.BindingFlags.NonPublic).Invoke(null, new object[] {this, VirtualView});
 
 			// This is used for cases where we are testing swapping out the page set on window
 			if (PlatformViewUnderTest?.Parent is FakeActivityRootView farw)
@@ -44,7 +45,7 @@ namespace Microsoft.Maui.DeviceTests.Stubs
 		protected override void DisconnectHandler(AActivity platformView)
 		{
 			base.DisconnectHandler(platformView);
-			WindowHandler.DisconnectHandler(MauiContext.GetNavigationRootManager());
+			typeof(WindowHandler).GetMethod("DisconnectHandler", System.Reflection.BindingFlags.Static | System.Reflection.BindingFlags.NonPublic).Invoke(null, new object[] { MauiContext.GetNavigationRootManager() });
 		}
 
 		public WindowHandlerStub()
@@ -54,7 +55,7 @@ namespace Microsoft.Maui.DeviceTests.Stubs
 
 		protected override AActivity CreatePlatformElement()
 		{
-			return MauiProgram.CurrentContext.GetActivity();
+			return MauiProgramDefaults.DefaultContext.GetActivity();
 		}
 	}
 }

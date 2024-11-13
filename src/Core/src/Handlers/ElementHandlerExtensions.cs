@@ -33,16 +33,16 @@ namespace Microsoft.Maui
 			return services;
 		}
 
-		public static T? GetService<T>(this IElementHandler handler, Type type)
+		public static T GetService<T>(this IElementHandler handler, Type type)
 		{
 			var services = handler.GetServiceProvider();
 
 			var service = services.GetService(type);
 
-			return (T?)service;
+			return (T)service;
 		}
 
-		public static T? GetService<T>(this IElementHandler handler)
+		public static T GetService<T>(this IElementHandler handler)
 		{
 			var services = handler.GetServiceProvider();
 
