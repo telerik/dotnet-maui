@@ -599,27 +599,27 @@ namespace Microsoft.Maui.DeviceTests
 		protected Task ValidateHasColor<THandler>(IView view, Color color, Action action = null) =>
 			ValidateHasColor(view, color, typeof(THandler), action);
 
-// 		protected static void MockAccessibilityExpectations(View view)
-// 		{
-// #if IOS || MACCATALYST
-// 			if (UIKit.UIAccessibility.IsVoiceOverRunning)
-// 				return;
+		// 		protected static void MockAccessibilityExpectations(View view)
+		// 		{
+		// #if IOS || MACCATALYST
+		// 			if (UIKit.UIAccessibility.IsVoiceOverRunning)
+		// 				return;
 
-// 			var mapperOverride = view.GetRendererOverrides<IView>();
+		// 			var mapperOverride = view.GetRendererOverrides<IView>();
 
-// 			mapperOverride.ModifyMapping(AutomationProperties.IsInAccessibleTreeProperty.PropertyName, (handler, virtualView, action) =>
-// 			{
-// 				if (virtualView is ILabel)
-// 				{
-// 					// accessibility for UILabel depends on if the text is set or not
-// 					// so we want to make sure text has propagated to the platform view
-// 					// before mocking accessibility expectations
-// 					handler.UpdateValue(nameof(ILabel.Text));
-// 				}
-// 				(handler.PlatformView as UIKit.UIView)?.SetupAccessibilityExpectationIfVoiceOverIsOff();
-// 				(mapperOverride as PropertyMapper).Chained[0]!.UpdateProperty(handler, view, nameof(AutomationProperties.IsInAccessibleTreeProperty));
-// 			});
-// #endif
-// 		}
+		// 			mapperOverride.ModifyMapping(AutomationProperties.IsInAccessibleTreeProperty.PropertyName, (handler, virtualView, action) =>
+		// 			{
+		// 				if (virtualView is ILabel)
+		// 				{
+		// 					// accessibility for UILabel depends on if the text is set or not
+		// 					// so we want to make sure text has propagated to the platform view
+		// 					// before mocking accessibility expectations
+		// 					handler.UpdateValue(nameof(ILabel.Text));
+		// 				}
+		// 				(handler.PlatformView as UIKit.UIView)?.SetupAccessibilityExpectationIfVoiceOverIsOff();
+		// 				(mapperOverride as PropertyMapper).Chained[0]!.UpdateProperty(handler, view, nameof(AutomationProperties.IsInAccessibleTreeProperty));
+		// 			});
+		// #endif
+		// 		}
 	}
 }

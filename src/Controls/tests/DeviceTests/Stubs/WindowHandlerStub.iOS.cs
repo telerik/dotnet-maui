@@ -54,7 +54,7 @@ namespace Microsoft.Maui.DeviceTests.Stubs
 			_currentView = VirtualView.Content;
 			var view = _currentView.ToPlatform2(MauiContext);
 			if (needsToPush)
-			{				
+			{
 				bool fireEvents = VirtualView is Window ? !(bool)typeof(Window).GetProperty("IsActivated", System.Reflection.BindingFlags.Instance | System.Reflection.BindingFlags.NonPublic).GetValue((Window)VirtualView) : true;
 				var vc =
 					((IPlatformViewHandler)_currentView.Handler).ViewController;
