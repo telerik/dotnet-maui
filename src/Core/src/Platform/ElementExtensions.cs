@@ -34,7 +34,7 @@ namespace Microsoft.Maui.Platform
 	{
 		static HashSet<Type> handlersWithConstructors = new HashSet<Type>();
 
-		static IElementHandler? CreateTypeWithInjection(this Type viewType, IMauiContext mauiContext)
+		static IElementHandler CreateTypeWithInjection(this Type viewType, IMauiContext mauiContext)
 		{
 			var handlerType = mauiContext.Handlers.GetHandlerType(viewType);
 
@@ -52,6 +52,11 @@ namespace Microsoft.Maui.Platform
 			return (IElementHandler)Extensions.DependencyInjection.
 				ActivatorUtilities.CreateInstance(mauiContext.Services, handlerType);
 		}
+
+		// After adding MAUI from public nugets, these methods now exist in two different assemblies,
+		// adding a renamed version here seemed the easiest way to avoid the collision.
+		public static IElementHandler ToHandler2(this IElement view, IMauiContext context) =>
+			ToHandler(view, context);
 
 		public static IElementHandler ToHandler(this IElement view, IMauiContext context)
 		{
@@ -101,6 +106,11 @@ namespace Microsoft.Maui.Platform
 			return handler;
 		}
 
+		// After adding MAUI from public nugets, these methods now exist in two different assemblies,
+		// adding a renamed version here seemed the easiest way to avoid the collision.
+		internal static PlatformView ToPlatform2(this IElement view) =>
+			ToPlatform(view);
+
 		internal static PlatformView ToPlatform(this IElement view)
 		{
 			if (view is IReplaceableView replaceableView && replaceableView.ReplacedView != view)
@@ -122,9 +132,14 @@ namespace Microsoft.Maui.Platform
 
 		}
 
+		// After adding MAUI from public nugets, these methods now exist in two different assemblies,
+		// adding a renamed version here seemed the easiest way to avoid the collision.
+		public static PlatformView ToPlatform2(this IElement view, IMauiContext context) =>
+			ToPlatform(view, context);
+
 		public static PlatformView ToPlatform(this IElement view, IMauiContext context)
 		{
-			var handler = view.ToHandler(context);
+			var handler = ToHandler((IElement)view, (IMauiContext)context);
 
 			if (handler.PlatformView is not PlatformView result)
 			{
@@ -159,19 +174,22 @@ namespace Microsoft.Maui.Platform
 				handler.SetVirtualView(element);
 		}
 
+		public static void SetApplicationHandler2(this PlatformApplication platformApplication, IApplication application, IMauiContext context) =>
+			SetHandler(platformApplication, application, context);
+
 		public static void SetApplicationHandler(this PlatformApplication platformApplication, IApplication application, IMauiContext context) =>
 			SetHandler(platformApplication, application, context);
 
 		public static void SetWindowHandler(this PlatformWindow platformWindow, IWindow window, IMauiContext context) =>
 			SetHandler(platformWindow, window, context);
 
-#if WINDOWS || IOS || ANDROID || TIZEN
-		internal static IWindow GetWindow(this IElement element) =>
-			element.Handler?.MauiContext?.GetPlatformWindow()?.GetWindow() ??
-			throw new InvalidOperationException("IWindow not found");
-#endif
+		// #if WINDOWS || IOS || ANDROID || TIZEN
+		// 		internal static IWindow GetWindow(this IElement element) =>
+		// 			element.Handler?.MauiContext?.GetPlatformWindow()?.GetWindow() ??
+		// 			throw new InvalidOperationException("IWindow not found");
+		// #endif
 
-		internal static T? FindParentOfType<T>(this IElement element, bool includeThis = false)
+		internal static T FindParentOfType<T>(this IElement element, bool includeThis = false)
 	where T : IElement
 		{
 			if (includeThis && element is T view)
@@ -186,9 +204,9 @@ namespace Microsoft.Maui.Platform
 			return default;
 		}
 
-		static IEnumerable<IElement?> GetParentsPath(this IElement self)
+		static IEnumerable<IElement> GetParentsPath(this IElement self)
 		{
-			IElement? current = self;
+			IElement current = self;
 
 			while (current != null && current is not IApplication)
 			{

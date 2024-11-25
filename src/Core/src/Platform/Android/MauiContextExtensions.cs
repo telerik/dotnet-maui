@@ -1,4 +1,8 @@
-﻿using System;
+﻿// The code is linked in our project under LinkBase=".../Platform/Android"
+// but the compiler magic won't work and will fail to find the using Android.* namespaces
+// unless wrapped in #if ANDROID...
+#if ANDROID
+using System;
 using Android.Content;
 using Android.Views;
 using AndroidX.AppCompat.App;
@@ -42,29 +46,46 @@ namespace Microsoft.Maui.Platform
 			(mauiContext.Context?.GetActivity() as AppCompatActivity)
 			?? throw new InvalidOperationException("AppCompatActivity Not Found");
 
+		// Reflection shortcut
+		static void AddWeakSpecific<TService>(IServiceProvider services, TService instance)
+			where TService : class
+		{
+			var type = services.GetType();
+			var addSpecific = type.GetMethod("AddSpecific", System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.Instance);
+			addSpecific.Invoke(services, new object[] { typeof(TService), static (object state) => (object)((WeakReference)state).Target, new WeakReference(instance) });
+		}
+
+		static void AddSpecific<TService>(IServiceProvider services, TService instance)
+			where TService : class
+		{
+			var type = services.GetType();
+			var addSpecific = type.GetMethod("AddSpecific", System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.Instance);
+			addSpecific.Invoke(services, new object[] { typeof(TService), static (object state) => (object)state, instance });
+		}
+
 		public static IMauiContext MakeScoped(this IMauiContext mauiContext,
-			LayoutInflater? layoutInflater = null,
-			FragmentManager? fragmentManager = null,
-			Android.Content.Context? context = null,
+			LayoutInflater layoutInflater = null,
+			FragmentManager fragmentManager = null,
+			Android.Content.Context context = null,
 			bool registerNewNavigationRoot = false)
 		{
 			var scopedContext = new MauiContext(mauiContext.Services);
 
 			if (layoutInflater != null)
-				scopedContext.AddWeakSpecific(layoutInflater);
+				AddWeakSpecific(scopedContext.Services, layoutInflater);
 
 			if (fragmentManager != null)
-				scopedContext.AddWeakSpecific(fragmentManager);
+				AddWeakSpecific(scopedContext.Services, fragmentManager);
 
 			if (context != null)
-				scopedContext.AddWeakSpecific(context);
+				AddWeakSpecific(scopedContext.Services, context);
 
 			if (registerNewNavigationRoot)
 			{
 				if (fragmentManager == null)
 					throw new InvalidOperationException("If you're creating a new Navigation Root you need to use a new Fragment Manager");
 
-				scopedContext.AddSpecific(new NavigationRootManager(scopedContext));
+				AddSpecific(scopedContext.Services, new NavigationRootManager(scopedContext));
 			}
 
 			return scopedContext;
@@ -87,13 +108,19 @@ namespace Microsoft.Maui.Platform
 				if (scopedMauiContext.GetActivity() == context.GetActivity() &&
 					view.Handler.PlatformView is View platformView)
 				{
-					scopedMauiContext.AddWeakSpecific(layoutInflater);
-					scopedMauiContext.AddWeakSpecific(childFragmentManager);
+					typeof(MauiContext)
+						.GetMethod("AddWeakSpecific", System.Reflection.BindingFlags.Instance | System.Reflection.BindingFlags.NonPublic)
+						.Invoke(scopedMauiContext, new object[] { layoutInflater });
+
+					typeof(MauiContext)
+						.GetMethod("AddWeakSpecific", System.Reflection.BindingFlags.Instance | System.Reflection.BindingFlags.NonPublic)
+						.Invoke(scopedMauiContext, new object[] { childFragmentManager });
+
 					return platformView;
 				}
 			}
 
-			return view.ToPlatform(fragmentMauiContext.MakeScoped(layoutInflater: layoutInflater, fragmentManager: childFragmentManager));
+			return (View)view.ToPlatform2(fragmentMauiContext.MakeScoped(layoutInflater: layoutInflater, fragmentManager: childFragmentManager));
 		}
 
 		internal static IServiceProvider GetApplicationServices(this IMauiContext mauiContext)
@@ -108,3 +135,4 @@ namespace Microsoft.Maui.Platform
 			mauiContext.Services.GetRequiredService<Android.App.Activity>();
 	}
 }
+#endif

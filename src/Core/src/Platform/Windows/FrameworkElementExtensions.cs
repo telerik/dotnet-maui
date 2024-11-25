@@ -1,4 +1,5 @@
 ﻿#nullable enable
+#if WINDOWS
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -8,6 +9,7 @@ using Microsoft.UI.Xaml.Controls;
 using Microsoft.UI.Xaml.Media;
 using Windows.UI.ViewManagement;
 using WPoint = Windows.Foundation.Point;
+using ActionDisposable = Microsoft.Maui.DeviceTests.ActionDisposable;
 
 namespace Microsoft.Maui.Platform
 {
@@ -317,3 +319,4 @@ namespace Microsoft.Maui.Platform
 		}
 	}
 }
+#endif
