@@ -51,7 +51,7 @@ namespace Microsoft.Maui.DeviceTests.Stubs
 #pragma warning disable CA1422 // Validate platform compatibility
 				return UIKit.UIApplication.SharedApplication.KeyWindow;
 #pragma warning restore CA1422 // Validate platform compatibility
-							  // return UIKit.UIApplication.SharedApplication.GetKeyWindow();
+			// return UIKit.UIApplication.SharedApplication.GetKeyWindow();
 #elif WINDOWS
 			if (serviceType == typeof(NavigationRootManager))
 				return _windowManager ??= new NavigationRootManager((UI.Xaml.Window)this.GetService(typeof(UI.Xaml.Window)));
