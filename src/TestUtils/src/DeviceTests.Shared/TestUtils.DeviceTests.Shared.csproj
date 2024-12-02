@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFrameworks>net8.0-ios;net8.0-android;net8.0-maccatalyst</TargetFrameworks>
@@ -7,6 +7,7 @@
     <RootNamespace>Microsoft.Maui.TestUtils.DeviceTests.Shared</RootNamespace>
     <AssemblyName>Microsoft.Maui.TestUtils.DeviceTests.Shared</AssemblyName>
     <!--<Nullable>enable</Nullable>-->
+    <WindowsSdkPackageVersion>10.0.19041.31</WindowsSdkPackageVersion>
   </PropertyGroup>
 
   <ItemGroup>
