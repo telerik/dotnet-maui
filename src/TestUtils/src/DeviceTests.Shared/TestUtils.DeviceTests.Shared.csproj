@@ -1,0 +1,63 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFrameworks>net8.0-ios;net8.0-android;net8.0-maccatalyst</TargetFrameworks>
+    <TargetFrameworks Condition="$([MSBuild]::IsOSPlatform('windows'))">$(TargetFrameworks);net8.0-windows10.0.19041.0</TargetFrameworks>
+    <SingleProject>true</SingleProject>
+    <RootNamespace>Microsoft.Maui.TestUtils.DeviceTests.Shared</RootNamespace>
+    <AssemblyName>Microsoft.Maui.TestUtils.DeviceTests.Shared</AssemblyName>
+    <!--<Nullable>enable</Nullable>-->
+    <WindowsSdkPackageVersion>10.0.19041.31</WindowsSdkPackageVersion>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\DeviceTests\TestUtils.DeviceTests.csproj" />
+    <ProjectReference Include="..\DeviceTests.Runners\TestUtils.DeviceTests.Runners.csproj" />
+  </ItemGroup>
+
+  <PropertyGroup>
+    <UseMaui>true</UseMaui>
+  </PropertyGroup>
+  <ItemGroup Condition="$(TargetFramework.Contains('net8'))">
+    <PackageReference Include="Microsoft.Maui.Controls" Condition=" $(CustomMauiVersion) == '' " Version="$(MauiVersion)" />
+    <PackageReference Include="Microsoft.Maui.Controls.Compatibility" Condition=" $(CustomMauiVersion) == '' " Version="$(MauiVersion)" />
+    <PackageReference Include="Microsoft.Maui.Controls" Condition=" $(CustomMauiVersion) != '' " Version="$(CustomMauiVersion)" />
+    <PackageReference Include="Microsoft.Maui.Controls.Compatibility" Condition=" $(CustomMauiVersion) != '' " Version="$(CustomMauiVersion)" />
+  </ItemGroup>
+
+  <PropertyGroup>
+    <MAUIDeviceTestExcludes>**/obj/**/*.*;../../../**/*Tests.cs;../../../**/*Tests.*.cs;../../../**/*.xaml.cs</MAUIDeviceTestExcludes>
+    <MAUIDeviceTestExcludes Condition="!$(TargetFramework.Contains('-ios')) AND !$(TargetFramework.Contains('-maccatalyst'))">$(MAUIDeviceTestExcludes);../../../**/*.iOS.cs;../../../**/Platforms/iOS/**/*.*;</MAUIDeviceTestExcludes>
+    <MAUIDeviceTestExcludes Condition="!$(TargetFramework.Contains('-android'))">$(MAUIDeviceTestExcludes);../../../**/*.Android.cs;../../../**/Platforms/Android/**/*.*;</MAUIDeviceTestExcludes>
+    <MAUIDeviceTestExcludes Condition="!$(TargetFramework.Contains('-windows'))">$(MAUIDeviceTestExcludes);../../../**/*.Windows.cs;../../../**/Platforms/Windows/**/*.*;</MAUIDeviceTestExcludes>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Include="..\..\..\Core\tests\DeviceTests.Shared\HandlerTests\HandlerTestBase.cs" LinkBase="Maui/Core.DeviceTests.Shared\HandlerTests" Exclude="$(MAUIDeviceTestExcludes)" />
+    <Compile Include="..\..\..\Core\tests\DeviceTests.Shared\HandlerTests\HandlerTestBasement.cs" LinkBase="Maui/Core.DeviceTests.Shared\HandlerTests" Exclude="$(MAUIDeviceTestExcludes)" />
+    <Compile Include="..\..\..\Core\tests\DeviceTests.Shared\HandlerTests\TestBase.cs" LinkBase="Maui/Core.DeviceTests.Shared\HandlerTests" Exclude="$(MAUIDeviceTestExcludes)" />
+    <Compile Include="..\..\..\Core\tests\DeviceTests.Shared\MauiProgramDefaults.cs" LinkBase="Maui/Core.DeviceTests.Shared" Exclude="$(MAUIDeviceTestExcludes)" />
+    <Compile Include="..\..\..\Core\tests\DeviceTests.Shared\Stubs\**\*.cs" LinkBase="Maui/Core.DeviceTests.Shared\Stubs" Exclude="$(MAUIDeviceTestExcludes)" />
+    <Compile Include="..\..\..\Core\tests\DeviceTests.Shared\ImageAnalysis\**\*.cs" LinkBase="Maui/Core.DeviceTests.Shared\ImageAnalisys" Exclude="$(MAUIDeviceTestExcludes)" />
+    <Compile Include="..\..\..\Core\src\MauiContextExtensions.cs" LinkBase="Maui/Core" Exclude="$(MAUIDeviceTestExcludes)" />
+    <Compile Include="..\..\..\Core\src\Handlers\ElementHandlerExtensions.cs" LinkBase="Maui/Core/Handlers" Exclude="$(MAUIDeviceTestExcludes)" />
+    <Compile Include="..\..\..\Core\src\Platform\ReflectionExtensions.cs" LinkBase="Maui/Core/Platform" Exclude="$(MAUIDeviceTestExcludes)" />
+    <Compile Include="..\..\..\Core\src\Platform\ElementExtensions.cs" LinkBase="Maui/Core/Platform" Exclude="$(MAUIDeviceTestExcludes)" />
+    <Compile Include="..\..\..\Core\src\Platform\HandlerNotFoundException.cs" LinkBase="Maui/Core/Platform" Exclude="$(MAUIDeviceTestExcludes)" />
+    <Compile Include="..\..\..\Core\src\Platform\Android\MauiContextExtensions.cs" LinkBase="Maui/Core/Platform/Android" Exclude="$(MAUIDeviceTestExcludes)" />
+    <Compile Include="..\..\..\Core\src\Platform\Android\JavaObjectExtensions.cs" LinkBase="Maui/Core/Platform/Android" Exclude="$(MAUIDeviceTestExcludes)" />
+    <Compile Include="..\..\..\Core\src\Platform\Windows\FrameworkElementExtensions.cs" LinkBase="Maui/Core/Platform/Windows" Exclude="$(MAUIDeviceTestExcludes)" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Include="..\..\..\Controls\tests\DeviceTests\ControlsHandler*.cs" LinkBase="Maui/Controls.DeviceTests" Exclude="$(MAUIDeviceTestExcludes)" />
+    <Compile Include="..\..\..\Controls\tests\DeviceTests\Stubs\*.cs" LinkBase="Maui/Controls.DeviceTests/Stubs" Exclude="$(MAUIDeviceTestExcludes)" />
+    <Compile Include="..\..\..\Controls\tests\DeviceTests\ControlsDeviceTestExtensions.cs" LinkBase="Maui/Controls.DeviceTests" Exclude="$(MAUIDeviceTestExcludes)" />
+    <Compile Include="..\..\..\Controls\tests\DeviceTests\Extensions.cs" LinkBase="Maui/Controls.DeviceTests" Exclude="$(MAUIDeviceTestExcludes)" />
+    <Compile Include="..\..\..\Controls\src\Core\Platform\PageExtensions.cs" LinkBase="Maui/Controls/Core/Platform" Exclude="$(MAUIDeviceTestExcludes)" />
+  </ItemGroup>
+
+  <Import Project="$(MauiSrcDirectory)Maui.InTree.props" Condition=" '$(UseMaui)' != 'true' " />
+  <Import Project="$(MauiSrcDirectory)MultiTargeting.targets" />
+
+</Project>

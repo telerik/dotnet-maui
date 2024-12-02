@@ -56,7 +56,7 @@
       <_UpdateBuildNumber Condition="$(CI) and '$(BUILD_BUILDNUMBER)' != '$(PackageVersion)' AND '$(_SkipUpdateBuildNumber)' != 'true'">$(PackageVersion)</_UpdateBuildNumber>
     </PropertyGroup>
 
-    <Error Condition="'$(_UpdateBuildNumber)' == '1.0.0'" Text="Unexpected _UpdateBuildNumber: '$(_UpdateBuildNumber)'" />
+    <!--<Error Condition="'$(_UpdateBuildNumber)' == '1.0.0'" Text="Unexpected _UpdateBuildNumber: '$(_UpdateBuildNumber)'" />-->
 
     <PropertyGroup Condition="'$(_UpdateBuildNumber)' != ''">
       <_UpdateBuildNumber Condition="'@(VersionMetadata)' != ''">$(_UpdateBuildNumber)+@(VersionMetadata -> '%(Identity)', '.')</_UpdateBuildNumber>
