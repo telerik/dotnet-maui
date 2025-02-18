@@ -152,15 +152,18 @@ namespace Microsoft.Maui.DeviceTests
 			{
 				IWindow window = CreateWindowForContent(view);
 
-				var application = mauiContext.Services.GetService<IApplication>();
+				// NOTE: ApplicationStub and the Window reference it holds causes a memory leak.
+				// As this code is required only for tests about ContentPage/NavigationPage and Windows it is commented out.
+				// Once the leak is fixed we can un-commented it again.
+				// var application = mauiContext.Services.GetService<IApplication>();
 
-				if (application is ApplicationStub appStub)
-				{
-					appStub.SetWindow((Window)window);
+				// if (application is ApplicationStub appStub)
+				// {
+				// 	appStub.SetWindow((Window)window);
 
-					// Trigger the work flow of creating a window
-					_ = application.CreateWindow(null);
-				}
+				// 	// Trigger the work flow of creating a window
+				// 	_ = application.CreateWindow(null);
+				// }
 
 				try
 				{
