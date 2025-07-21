@@ -66,7 +66,7 @@ namespace Microsoft.Maui.Platform
 		public static IMauiContext MakeScoped(this IMauiContext mauiContext,
 			LayoutInflater layoutInflater = null,
 			FragmentManager fragmentManager = null,
-			Android.Content.Context context = null,
+			global::Android.Content.Context context = null,
 			bool registerNewNavigationRoot = false)
 		{
 			var scopedContext = new MauiContext(mauiContext.Services);
@@ -94,7 +94,7 @@ namespace Microsoft.Maui.Platform
 		internal static View ToPlatform(
 			this IView view,
 			IMauiContext fragmentMauiContext,
-			Android.Content.Context context,
+			global::Android.Content.Context context,
 			LayoutInflater layoutInflater,
 			FragmentManager childFragmentManager)
 		{
@@ -131,8 +131,8 @@ namespace Microsoft.Maui.Platform
 			throw new InvalidOperationException("Unable to find Application Services");
 		}
 
-		public static Android.App.Activity GetPlatformWindow(this IMauiContext mauiContext) =>
-			mauiContext.Services.GetRequiredService<Android.App.Activity>();
+		public static global::Android.App.Activity GetPlatformWindow(this IMauiContext mauiContext) =>
+			mauiContext.Services.GetRequiredService<global::Android.App.Activity>();
 	}
 }
 #endif
