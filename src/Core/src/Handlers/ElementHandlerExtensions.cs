@@ -22,7 +22,7 @@ namespace Microsoft.Maui
 			(elementHandler.VirtualView?.ToPlatform() as PlatformView) ??
 				throw new InvalidOperationException($"Unable to convert {elementHandler} to {typeof(PlatformView)}");
 
-#if NET8 || !TEST_UTILS_SHARED
+#if NET8_0 || !TEST_UTILS_SHARED
 		public static IServiceProvider GetServiceProvider(this IElementHandler handler)
 		{
 			var context = handler.MauiContext ??

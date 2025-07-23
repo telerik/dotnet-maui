@@ -10,7 +10,6 @@
     <Nullable>enable</Nullable>
     <ExcludeMicrosoftNetTestSdk>true</ExcludeMicrosoftNetTestSdk>
     <DisableArcadeTestFramework>true</DisableArcadeTestFramework>
-    <WindowsSdkPackageVersion>10.0.19041.31</WindowsSdkPackageVersion>
   </PropertyGroup>
 
   <ItemGroup>

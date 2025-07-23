@@ -12,7 +12,6 @@
     <ExcludeMicrosoftNetTestSdk>true</ExcludeMicrosoftNetTestSdk>
     <DisableArcadeTestFramework>true</DisableArcadeTestFramework>
     <MauiEnableXamlCBindingWithSourceCompilation>true</MauiEnableXamlCBindingWithSourceCompilation>
-    <WindowsSdkPackageVersion>10.0.19041.31</WindowsSdkPackageVersion>
   </PropertyGroup>
 
   <ItemGroup>

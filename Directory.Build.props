@@ -2,7 +2,6 @@
   <!--<Import Project="Sdk.props" Sdk="Microsoft.DotNet.Arcade.Sdk" />-->
   <Import Condition="'$(EnvironmentBuildPropsImported)' != 'True'" Project="$(MSBuildThisFileDirectory)eng\Environment.Build.props" />
   <Import Condition="Exists('../../Directory.Build.props')" Project="../../Directory.Build.props" />
-  <Import Condition="Exists('$(MSBuildThisFileDirectory)eng\Versions.props')" Project="$(MSBuildThisFileDirectory)eng\Versions.props" />
 
   <PropertyGroup>
     <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
@@ -130,7 +129,7 @@
   </PropertyGroup>
 
   <!-- Windows specific settings -->
-  <PropertyGroup Condition="'$(_MauiTargetPlatformIsWindows)' == 'True'">
+  <PropertyGroup Condition="'$(_MauiTargetPlatformIsWindows)' == 'True' and '$(MauiAppPlatforms)' == ''">
     <WindowsSdkPackageVersion>10.0.19041.44</WindowsSdkPackageVersion>
   </PropertyGroup>
 
