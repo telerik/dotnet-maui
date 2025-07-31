@@ -1,8 +1,8 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFrameworks>net8.0-ios;net8.0-android;net8.0-maccatalyst</TargetFrameworks>
-    <TargetFrameworks Condition="$([MSBuild]::IsOSPlatform('windows'))">$(TargetFrameworks);net8.0-windows10.0.19041.0</TargetFrameworks>
+    <TargetFrameworks Condition="'$(MauiAppPlatforms)' != ''">$(MauiAppPlatforms)</TargetFrameworks>
+    <TargetFrameworks Condition="'$(MauiAppPlatforms)' == ''">$(MauiDeviceTestsPlatforms)</TargetFrameworks>
     <SingleProject>true</SingleProject>
     <RootNamespace>Microsoft.Maui.TestUtils.DeviceTests.Runners</RootNamespace>
     <AssemblyName>Microsoft.Maui.TestUtils.DeviceTests.Runners</AssemblyName>
@@ -12,7 +12,6 @@
     <ExcludeMicrosoftNetTestSdk>true</ExcludeMicrosoftNetTestSdk>
     <DisableArcadeTestFramework>true</DisableArcadeTestFramework>
     <MauiEnableXamlCBindingWithSourceCompilation>true</MauiEnableXamlCBindingWithSourceCompilation>
-    <WindowsSdkPackageVersion>10.0.19041.31</WindowsSdkPackageVersion>
   </PropertyGroup>
 
   <ItemGroup>
@@ -41,11 +40,20 @@
   <PropertyGroup>
     <UseMaui>true</UseMaui>
   </PropertyGroup>
+
   <ItemGroup Condition="$(TargetFramework.Contains('net8'))">
-    <PackageReference Include="Microsoft.Maui.Controls" Condition=" $(CustomMauiVersion) == '' " Version="$(MauiVersion)" />
-    <PackageReference Include="Microsoft.Maui.Controls.Compatibility" Condition=" $(CustomMauiVersion) == '' " Version="$(MauiVersion)" />
-    <PackageReference Include="Microsoft.Maui.Controls" Condition=" $(CustomMauiVersion) != '' " Version="$(CustomMauiVersion)" />
-    <PackageReference Include="Microsoft.Maui.Controls.Compatibility" Condition=" $(CustomMauiVersion) != '' " Version="$(CustomMauiVersion)" />
+    <PackageReference Include="Microsoft.Maui.Controls" Condition=" $(CustomMauiNet8Version) == '' " Version="$(MauiVersion)" />
+    <PackageReference Include="Microsoft.Maui.Controls" Condition=" $(CustomMauiNet8Version) != '' " Version="$(CustomMauiNet8Version)" />
+  </ItemGroup>
+
+  <ItemGroup Condition="$(TargetFramework.Contains('net9'))">
+    <PackageReference Include="Microsoft.Maui.Controls" Condition=" $(CustomMauiNet9Version) == '' " Version="$(MauiVersion)" />
+    <PackageReference Include="Microsoft.Maui.Controls" Condition=" $(CustomMauiNet9Version) != '' " Version="$(CustomMauiNet9Version)" />
+  </ItemGroup>
+
+  <ItemGroup Condition="$(TargetFramework.Contains('net10'))">
+    <PackageReference Include="Microsoft.Maui.Controls" Condition=" $(CustomMauiNet10Version) == '' " Version="$(MauiVersion)" />
+    <PackageReference Include="Microsoft.Maui.Controls" Condition=" $(CustomMauiNet10Version) != '' " Version="$(CustomMauiNet10Version)" />
   </ItemGroup>
 
   <ItemGroup>
