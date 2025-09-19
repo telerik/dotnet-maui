@@ -88,7 +88,11 @@ namespace Microsoft.Maui.DeviceTests.Stubs
 			{
 				if (Window is not null)
 				{
+#if NET10_0_OR_GREATER
+					bool isActivated = Window.IsActivated;
+#else
 					bool isActivated = (bool)typeof(Window).GetProperty("IsActivated", System.Reflection.BindingFlags.Instance | System.Reflection.BindingFlags.NonPublic).GetValue(Window);
+#endif
 					if (!isActivated)
 						_window.Activated();
 				}

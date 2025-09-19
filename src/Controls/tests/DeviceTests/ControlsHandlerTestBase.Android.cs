@@ -271,7 +271,11 @@ namespace Microsoft.Maui.DeviceTests
 				base.OnResume();
 
 				bool isCreated = _window is Window ? (bool)typeof(Window).GetProperty("IsCreated", System.Reflection.BindingFlags.Instance | System.Reflection.BindingFlags.NonPublic).GetValue(_window) : false;
+#if NET10_0_OR_GREATER
+				bool isActivated = _window is Window window ? window.IsActivated : false;
+#else
 				bool isActivated = _window is Window ? (bool)typeof(Window).GetProperty("IsActivated", System.Reflection.BindingFlags.Instance | System.Reflection.BindingFlags.NonPublic).GetValue(_window) : false;
+#endif
 
 				if (!isCreated)
 					_window.Created();

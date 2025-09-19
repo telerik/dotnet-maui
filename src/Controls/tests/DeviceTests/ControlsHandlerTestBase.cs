@@ -227,7 +227,11 @@ namespace Microsoft.Maui.DeviceTests
 #if !WINDOWS
 						if (window is Window controlsWindow)
 						{
+#if NET10_0_OR_GREATER
+							if (!controlsWindow.IsActivated)
+#else
 							if (!(bool)typeof(Window).GetProperty("IsActivated", System.Reflection.BindingFlags.Instance | System.Reflection.BindingFlags.NonPublic).GetValue(controlsWindow))
+#endif
 								window.Activated();
 						}
 						else
@@ -258,7 +262,11 @@ namespace Microsoft.Maui.DeviceTests
 
 
 #if !WINDOWS
+#if NET10_0_OR_GREATER
+						bool isActivated = controlsWindow?.IsActivated ?? false;
+#else
 						bool isActivated = controlsWindow == null ? false : (bool)typeof(Window).GetProperty("IsActivated", System.Reflection.BindingFlags.Instance | System.Reflection.BindingFlags.NonPublic).GetValue(controlsWindow);
+#endif
 						bool isDestroyed = controlsWindow == null ? false : (bool)typeof(Window).GetProperty("IsDestroyed", System.Reflection.BindingFlags.Instance | System.Reflection.BindingFlags.NonPublic).GetValue(controlsWindow);
 
 						if (isActivated)
