@@ -55,7 +55,11 @@ namespace Microsoft.Maui.DeviceTests.Stubs
 			var view = _currentView.ToPlatform2(MauiContext);
 			if (needsToPush)
 			{
+#if NET10_0_OR_GREATER
+				bool fireEvents = VirtualView is Window window ? !window.IsActivated : true;
+#else
 				bool fireEvents = VirtualView is Window ? !(bool)typeof(Window).GetProperty("IsActivated", System.Reflection.BindingFlags.Instance | System.Reflection.BindingFlags.NonPublic).GetValue((Window)VirtualView) : true;
+#endif
 				var vc =
 					((IPlatformViewHandler)_currentView.Handler).ViewController;
 
@@ -67,7 +71,11 @@ namespace Microsoft.Maui.DeviceTests.Stubs
 						_workSpace.AddChildViewController(vc);
 						_workSpace.View.AddSubview(vc.View);
 						if (fireEvents && this is IElementHandler elementHandler && elementHandler.VirtualView is IWindow virtualView)
+#if NET10_0_OR_GREATER
+							FireWindowEvent(virtualView, (window) => !window.IsActivated, () =>
+#else
 							FireWindowEvent(virtualView, (window) => !(bool)typeof(Window).GetProperty("IsActivated", System.Reflection.BindingFlags.Instance | System.Reflection.BindingFlags.NonPublic).GetValue(window), () =>
+#endif
 							{
 								if (!IsDisconnected)
 									VirtualView.Activated();
@@ -113,7 +121,11 @@ namespace Microsoft.Maui.DeviceTests.Stubs
 				return;
 			}
 
+#if NET10_0_OR_GREATER
+			FireWindowEvent(virtualView, (window) => window.IsActivated, () => virtualView.Deactivated());
+#else
 			FireWindowEvent(virtualView, (window) => (bool)typeof(Window).GetProperty("IsActivated", System.Reflection.BindingFlags.Instance | System.Reflection.BindingFlags.NonPublic).GetValue(window), () => virtualView.Deactivated());
+#endif
 
 			while (pvc.PresentedViewController is UIViewController mw && typeof(Microsoft.Maui.Platform.ContentView).Assembly.GetType("Microsoft.Maui.Platform.ModalWrapper").IsInstanceOfType(mw))
 			{
