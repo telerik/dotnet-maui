@@ -14,7 +14,9 @@ namespace Microsoft.Maui.TestUtils.DeviceTests.Runners.HeadlessRunner
 	public class ControlsHeadlessTestRunner : AndroidApplicationEntryPoint
 	{
 		const string CategoriesFileName = "devicetestcategories.txt";
+		const string FilterFileName = "devicetestfilter.txt";
 		readonly string _categoriesFilePath;
+		readonly string _filterFilePath;
 
 		public static string? TestResultsFile;
 		public static int? LoopCount;
@@ -30,7 +32,9 @@ namespace Microsoft.Maui.TestUtils.DeviceTests.Runners.HeadlessRunner
 			_runnerOptions = runnerOptions;
 			_options = options;
 			_resultsPath = TestResultsFile;
-			_categoriesFilePath = Path.Combine(Path.GetDirectoryName(_resultsPath) ?? string.Empty, CategoriesFileName);
+			var resultsDir = Path.GetDirectoryName(_resultsPath) ?? string.Empty;
+			_categoriesFilePath = Path.Combine(resultsDir, CategoriesFileName);
+			_filterFilePath = Path.Combine(resultsDir, FilterFileName);
 			_loopCount = LoopCount ?? 0;
 			_logger = new();
 		}
@@ -59,6 +63,45 @@ namespace Microsoft.Maui.TestUtils.DeviceTests.Runners.HeadlessRunner
 		{
 			var testRunner = base.GetTestRunner(logWriter);
 
+			// Filter mode: run only specific classes/methods from the filter file
+			if (_loopCount == -2 && File.Exists(_filterFilePath))
+			{
+				var filterLines = File.ReadAllLines(_filterFilePath)
+					.Where(l => !string.IsNullOrWhiteSpace(l))
+					.ToList();
+
+				var classFilters = filterLines
+					.Where(l => l.StartsWith("class:"))
+					.Select(l => l.Substring("class:".Length).Trim())
+					.ToList();
+
+				var methodFilters = filterLines
+					.Where(l => l.StartsWith("method:"))
+					.Select(l => l.Substring("method:".Length).Trim())
+					.ToList();
+
+				if (classFilters.Count > 0 || methodFilters.Count > 0)
+				{
+					testRunner.RunAllTestsByDefault = false;
+
+					foreach (var cls in classFilters)
+					{
+						testRunner.SkipClass(cls, false);
+					}
+
+					foreach (var method in methodFilters)
+					{
+						testRunner.SkipMethod(method, false);
+					}
+				}
+
+				// Use a single result file (no category suffix) for filter mode
+				var resultPath = _resultsPath?.Split(".xml") ?? new[] { "" };
+				_resultsPath = $"{resultPath[0]}_filtered.xml";
+
+				return testRunner;
+			}
+
 			var allCategories = File.ReadAllLines(_categoriesFilePath);
 			var categoriesToRun = allCategories.Skip(_loopCount).Take(1).ToArray();
 
@@ -70,8 +113,8 @@ namespace Microsoft.Maui.TestUtils.DeviceTests.Runners.HeadlessRunner
 			}
 
 			var currentCategory = categoriesToRun[0];
-			var resultPath = _resultsPath?.Split(".xml") ?? new[] { "" };
-			_resultsPath = $"{resultPath[0]}_{currentCategory}.xml";
+			var resultPathCat = _resultsPath?.Split(".xml") ?? new[] { "" };
+			_resultsPath = $"{resultPathCat[0]}_{currentCategory}.xml";
 
 			testRunner.SkipCategories(categoriesToSkip);
 
@@ -84,7 +127,7 @@ namespace Microsoft.Maui.TestUtils.DeviceTests.Runners.HeadlessRunner
 
 			try
 			{
-				// Got called with -1 parameter, just discover the tests to run
+				// Discovery mode: find all categories and write them to file
 				if (_loopCount == -1)
 				{
 					var categories = DiscoverTestsInAssemblies();
@@ -94,6 +137,9 @@ namespace Microsoft.Maui.TestUtils.DeviceTests.Runners.HeadlessRunner
 					return null;
 				}
 
+				// Filter mode: run only specific classes/methods
+				// Category mode: run category at index _loopCount
+				// Both use RunAsync — GetTestRunner applies the appropriate filters
 				await RunAsync();
 			}
 			catch (Exception ex)
@@ -103,7 +149,9 @@ namespace Microsoft.Maui.TestUtils.DeviceTests.Runners.HeadlessRunner
 			TestsCompleted -= OnTestsCompleted;
 
 			if (File.Exists(TestsResultsFinalPath))
+			{
 				return TestsResultsFinalPath;
+			}
 
 			return null;
 
