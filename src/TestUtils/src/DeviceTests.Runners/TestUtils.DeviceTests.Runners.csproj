@@ -56,8 +56,12 @@
     <PackageReference Include="Microsoft.Maui.Controls" Condition=" $(CustomMauiNet10Version) != '' " Version="$(CustomMauiNet10Version)" />
   </ItemGroup>
 
+  <ItemGroup Condition="$(TargetFramework.Contains('net11'))">
+    <PackageReference Include="Microsoft.Maui.Controls" Condition=" $(CustomMauiNet11Version) == '' " Version="$(MauiVersion)" />
+    <PackageReference Include="Microsoft.Maui.Controls" Condition=" $(CustomMauiNet11Version) != '' " Version="$(CustomMauiNet11Version)" />
+  </ItemGroup>
+
   <ItemGroup>
-    <Folder Include="HeadlessRunner\MacCatalyst\" />
     <Folder Include="HeadlessRunner\Windows\" />
   </ItemGroup>
 

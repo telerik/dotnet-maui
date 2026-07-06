@@ -50,6 +50,11 @@
     <PackageReference Include="Microsoft.Maui.Controls" Condition=" $(CustomMauiNet10Version) != '' " Version="$(CustomMauiNet10Version)" />
   </ItemGroup>
 
+  <ItemGroup Condition="$(TargetFramework.Contains('net11'))">
+    <PackageReference Include="Microsoft.Maui.Controls" Condition=" $(CustomMauiNet11Version) == '' " Version="$(MauiVersion)" />
+    <PackageReference Include="Microsoft.Maui.Controls" Condition=" $(CustomMauiNet11Version) != '' " Version="$(CustomMauiNet11Version)" />
+  </ItemGroup>
+
   <Import Project="$(MauiSrcDirectory)Maui.InTree.props" Condition=" '$(UseMaui)' != 'true' " />
   <Import Project="$(MauiSrcDirectory)MultiTargeting.targets" />
 
