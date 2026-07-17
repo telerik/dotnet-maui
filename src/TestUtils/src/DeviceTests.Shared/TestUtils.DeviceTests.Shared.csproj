@@ -37,6 +37,11 @@
     <PackageReference Include="Microsoft.Maui.Controls" Condition=" $(CustomMauiNet10Version) != '' " Version="$(CustomMauiNet10Version)" />
   </ItemGroup>
 
+  <ItemGroup Condition="$(TargetFramework.Contains('net11'))">
+    <PackageReference Include="Microsoft.Maui.Controls" Condition=" $(CustomMauiNet11Version) == '' " Version="$(MauiVersion)" />
+    <PackageReference Include="Microsoft.Maui.Controls" Condition=" $(CustomMauiNet11Version) != '' " Version="$(CustomMauiNet11Version)" />
+  </ItemGroup>
+
   <PropertyGroup>
     <MAUIDeviceTestExcludes>**/obj/**/*.*;../../../**/*Tests.cs;../../../**/*Tests.*.cs;../../../**/*.xaml.cs</MAUIDeviceTestExcludes>
     <MAUIDeviceTestExcludes Condition="!$(TargetFramework.Contains('-ios')) AND !$(TargetFramework.Contains('-maccatalyst'))">$(MAUIDeviceTestExcludes);../../../**/*.iOS.cs;../../../**/Platforms/iOS/**/*.*;</MAUIDeviceTestExcludes>
