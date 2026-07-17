@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Linq;
 using Microsoft.Maui.ApplicationModel;
 
 namespace Microsoft.Maui.DeviceTests.Stubs

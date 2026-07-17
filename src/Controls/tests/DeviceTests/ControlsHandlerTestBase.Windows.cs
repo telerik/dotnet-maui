@@ -33,7 +33,7 @@ namespace Microsoft.Maui.DeviceTests
 				var applicationContext = mauiContext.MakeApplicationScope(UI.Xaml.Application.Current);
 
 				var appStub = new MauiAppNewWindowStub(window);
-				UI.Xaml.Application.Current.SetApplicationHandler(appStub, applicationContext);
+				UI.Xaml.Application.Current.SetApplicationHandler2(appStub, applicationContext); // Resolves name conflict
 				WWindow newWindow = null;
 				try
 				{
@@ -51,130 +51,130 @@ namespace Microsoft.Maui.DeviceTests
 			});
 		}
 
-		protected IEnumerable<WNavigationViewItem> GetNavigationViewItems(MauiNavigationView navigationView)
-		{
-			if (navigationView.MenuItems?.Count > 0)
-			{
-				foreach (var menuItem in navigationView.MenuItems)
-				{
-					if (menuItem is WNavigationViewItem item)
-						yield return item;
-				}
-			}
-			else if (navigationView.MenuItemsSource != null && navigationView.TopNavMenuItemsHost != null)
-			{
-				var itemCount = navigationView.TopNavMenuItemsHost.ItemsSourceView.Count;
-				for (int i = 0; i < itemCount; i++)
-				{
-					UI.Xaml.UIElement uIElement = navigationView.TopNavMenuItemsHost.TryGetElement(i);
+		//protected IEnumerable<WNavigationViewItem> GetNavigationViewItems(MauiNavigationView navigationView)
+		//{
+		//	if (navigationView.MenuItems?.Count > 0)
+		//	{
+		//		foreach (var menuItem in navigationView.MenuItems)
+		//		{
+		//			if (menuItem is WNavigationViewItem item)
+		//				yield return item;
+		//		}
+		//	}
+		//	else if (navigationView.MenuItemsSource != null && navigationView.TopNavMenuItemsHost != null)
+		//	{
+		//		var itemCount = navigationView.TopNavMenuItemsHost.ItemsSourceView.Count;
+		//		for (int i = 0; i < itemCount; i++)
+		//		{
+		//			UI.Xaml.UIElement uIElement = navigationView.TopNavMenuItemsHost.TryGetElement(i);
 
-					if (uIElement is WNavigationViewItem item)
-						yield return item;
-				}
-			}
-		}
+		//			if (uIElement is WNavigationViewItem item)
+		//				yield return item;
+		//		}
+		//	}
+		//}
 
-		protected double DistanceYFromTheBottomOfTheAppTitleBar(IElement element)
-		{
-			var handler = element.Handler;
-			var rootManager = handler.MauiContext.GetNavigationRootManager();
-			var position = element.GetLocationRelativeTo(rootManager.AppTitleBar);
-			var distance = rootManager.AppTitleBar.ActualHeight - position.Value.Y;
-			return distance;
-		}
+		//protected double DistanceYFromTheBottomOfTheAppTitleBar(IElement element)
+		//{
+		//	var handler = element.Handler;
+		//	var rootManager = handler.MauiContext.GetNavigationRootManager();
+		//	var position = element.GetLocationRelativeTo(rootManager.AppTitleBar);
+		//	var distance = rootManager.AppTitleBar.ActualHeight - position.Value.Y;
+		//	return distance;
+		//}
 
 		MauiNavigationView GetMauiNavigationView(NavigationRootManager navigationRootManager)
 		{
 			return (navigationRootManager.RootView as WindowRootView).NavigationViewControl;
 		}
 
-		protected WindowRootView GetWindowRootView(IElementHandler handler)
-		{
-			return handler.MauiContext.GetNavigationRootManager().RootView as WindowRootView;
-		}
+		//protected WindowRootView GetWindowRootView(IElementHandler handler)
+		//{
+		//	return handler.MauiContext.GetNavigationRootManager().RootView as WindowRootView;
+		//}
 
-		protected MauiNavigationView GetMauiNavigationView(IMauiContext mauiContext)
-		{
-			return GetMauiNavigationView(mauiContext.GetNavigationRootManager());
-		}
+		//protected MauiNavigationView GetMauiNavigationView(IMauiContext mauiContext)
+		//{
+		//	return GetMauiNavigationView(mauiContext.GetNavigationRootManager());
+		//}
 
-		protected bool IsBackButtonVisible(IElementHandler handler) =>
-			IsBackButtonVisible(handler.MauiContext);
+		//protected bool IsBackButtonVisible(IElementHandler handler) =>
+		//	IsBackButtonVisible(handler.MauiContext);
 
-		bool IsBackButtonVisible(IMauiContext mauiContext)
-		{
-			var navView = GetMauiNavigationView(mauiContext);
-			return navView.IsBackButtonVisible == UI.Xaml.Controls.NavigationViewBackButtonVisible.Visible;
-		}
+		//bool IsBackButtonVisible(IMauiContext mauiContext)
+		//{
+		//	var navView = GetMauiNavigationView(mauiContext);
+		//	return navView.IsBackButtonVisible == UI.Xaml.Controls.NavigationViewBackButtonVisible.Visible;
+		//}
 
-		public bool IsNavigationBarVisible(IElementHandler handler) =>
-			IsNavigationBarVisible(handler.MauiContext);
+		//public bool IsNavigationBarVisible(IElementHandler handler) =>
+		//	IsNavigationBarVisible(handler.MauiContext);
 
-		public bool IsNavigationBarVisible(IMauiContext mauiContext)
-		{
-			var header = GetPlatformToolbar(mauiContext);
-			return header?.Visibility == UI.Xaml.Visibility.Visible;
-		}
+		//public bool IsNavigationBarVisible(IMauiContext mauiContext)
+		//{
+		//	var header = GetPlatformToolbar(mauiContext);
+		//	return header?.Visibility == UI.Xaml.Visibility.Visible;
+		//}
 
-		protected MauiToolbar GetPlatformToolbar(IMauiContext mauiContext)
-		{
-			var navView = (RootNavigationView)GetMauiNavigationView(mauiContext);
-			if (navView.PaneDisplayMode == NavigationViewPaneDisplayMode.Top)
-				return (MauiToolbar)navView.PaneFooter;
+		//protected MauiToolbar GetPlatformToolbar(IMauiContext mauiContext)
+		//{
+		//	var navView = (RootNavigationView)GetMauiNavigationView(mauiContext);
+		//	if (navView.PaneDisplayMode == NavigationViewPaneDisplayMode.Top)
+		//		return (MauiToolbar)navView.PaneFooter;
 
-			return (MauiToolbar)navView.Header;
-		}
+		//	return (MauiToolbar)navView.Header;
+		//}
 
-		protected MauiToolbar GetPlatformToolbar(IElementHandler handler) =>
-			GetPlatformToolbar(handler.MauiContext);
+		//protected MauiToolbar GetPlatformToolbar(IElementHandler handler) =>
+		//	GetPlatformToolbar(handler.MauiContext);
 
-		protected Size GetTitleViewExpectedSize(IElementHandler handler)
-		{
-			var headerView = GetPlatformToolbar(handler.MauiContext);
-			return new Size(headerView.ActualWidth, headerView.ActualHeight);
-		}
+		//protected Size GetTitleViewExpectedSize(IElementHandler handler)
+		//{
+		//	var headerView = GetPlatformToolbar(handler.MauiContext);
+		//	return new Size(headerView.ActualWidth, headerView.ActualHeight);
+		//}
 
-		public bool ToolbarItemsMatch(
-			IElementHandler handler,
-			params ToolbarItem[] toolbarItems)
-		{
-			var primaryToolbarItems = toolbarItems.Where(x => x.Order != ToolbarItemOrder.Secondary).ToArray();
-			var secondaryToolbarItems = toolbarItems.Where(x => x.Order == ToolbarItemOrder.Secondary).ToArray();
+		//public bool ToolbarItemsMatch(
+		//	IElementHandler handler,
+		//	params ToolbarItem[] toolbarItems)
+		//{
+		//	var primaryToolbarItems = toolbarItems.Where(x => x.Order != ToolbarItemOrder.Secondary).ToArray();
+		//	var secondaryToolbarItems = toolbarItems.Where(x => x.Order == ToolbarItemOrder.Secondary).ToArray();
 
-			var navView = (RootNavigationView)GetMauiNavigationView(handler.MauiContext);
-			MauiToolbar windowHeader = (MauiToolbar)navView.Header;
+		//	var navView = (RootNavigationView)GetMauiNavigationView(handler.MauiContext);
+		//	MauiToolbar windowHeader = (MauiToolbar)navView.Header;
 
-			ValidateCommandBarCommands(windowHeader?.CommandBar?.PrimaryCommands, primaryToolbarItems);
-			ValidateCommandBarCommands(windowHeader?.CommandBar?.SecondaryCommands, secondaryToolbarItems);
+		//	ValidateCommandBarCommands(windowHeader?.CommandBar?.PrimaryCommands, primaryToolbarItems);
+		//	ValidateCommandBarCommands(windowHeader?.CommandBar?.SecondaryCommands, secondaryToolbarItems);
 
-			void ValidateCommandBarCommands(IObservableVector<ICommandBarElement> commands, ToolbarItem[] orderToolbarItems)
-			{
-				if (orderToolbarItems.Length == 0)
-				{
-					Assert.True(commands is null || commands.Count == 0);
-					return;
-				}
+		//	void ValidateCommandBarCommands(IObservableVector<ICommandBarElement> commands, ToolbarItem[] orderToolbarItems)
+		//	{
+		//		if (orderToolbarItems.Length == 0)
+		//		{
+		//			Assert.True(commands is null || commands.Count == 0);
+		//			return;
+		//		}
 
-				Assert.NotNull(commands);
-				Assert.Equal(orderToolbarItems.Length, commands.Count);
-				for (var i = 0; i < toolbarItems.Length; i++)
-				{
-					ToolbarItem toolbarItem = orderToolbarItems[i];
-					var command = ((WAppBarButton)commands[i]);
-					Assert.Equal(toolbarItem, command.DataContext);
-				}
-			}
+		//		Assert.NotNull(commands);
+		//		Assert.Equal(orderToolbarItems.Length, commands.Count);
+		//		for (var i = 0; i < toolbarItems.Length; i++)
+		//		{
+		//			ToolbarItem toolbarItem = orderToolbarItems[i];
+		//			var command = ((WAppBarButton)commands[i]);
+		//			Assert.Equal(toolbarItem, command.DataContext);
+		//		}
+		//	}
 
-			return true;
-		}
+		//	return true;
+		//}
 
-		protected FrameworkElement GetTitleView(IElementHandler handler)
-		{
-			var toolbar = GetPlatformToolbar(handler);
-			return (FrameworkElement)toolbar.TitleView;
-		}
+		//protected FrameworkElement GetTitleView(IElementHandler handler)
+		//{
+		//	var toolbar = GetPlatformToolbar(handler);
+		//	return (FrameworkElement)toolbar.TitleView;
+		//}
 
-		protected string GetToolbarTitle(IElementHandler handler) =>
-			GetPlatformToolbar(handler).Title;
+		//protected string GetToolbarTitle(IElementHandler handler) =>
+		//	GetPlatformToolbar(handler).Title;
 	}
 }

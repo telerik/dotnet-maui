@@ -1,7 +1,8 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFrameworks>$(MauiDeviceTestsPlatforms)</TargetFrameworks>
+    <TargetFrameworks Condition="'$(MauiAppPlatforms)' != ''">$(MauiAppPlatforms)</TargetFrameworks>
+    <TargetFrameworks Condition="'$(MauiAppPlatforms)' == ''">$(MauiDeviceTestsPlatforms)</TargetFrameworks>
     <TargetPlatformMinVersion Condition="$(TargetFramework.Contains('-windows'))">10.0.17763.0</TargetPlatformMinVersion>
     <SingleProject>true</SingleProject>
     <RootNamespace>Microsoft.Maui.TestUtils.DeviceTests</RootNamespace>
@@ -16,16 +17,42 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="xunit" Version="$(XunitPackageVersion)" />
-    <PackageReference Include="xunit.assert" Version="$(XunitAssertPackageVersion)" />
-    <PackageReference Include="xunit.runner.utility" Version="$(XunitPackageVersion)" />
-    <PackageReference Include="xunit.extensibility.execution" Version="$(XunitExtensibilityExecutionPackageVersion)" />
+    <PackageReference Include="xunit" Version="2.9.0" />
+    <PackageReference Include="xunit.assert" Version="2.9.0" />
+    <PackageReference Include="xunit.runner.utility" Version="2.9.0" />
+    <PackageReference Include="xunit.extensibility.execution" Version="2.9.0" />
     <PackageReference Include="Microsoft.DotNet.XHarness.TestRunners.Xunit" Version="1.0.0-prerelease.21558.2" />
   </ItemGroup>
 
+  <!--
+    We want to use offical MAUI nuget packets were possible...
   <ItemGroup>
     <ProjectReference Include="..\..\..\Core\src\Core.csproj" />
     <ProjectReference Include="..\..\..\Essentials\src\Essentials.csproj" />
+  </ItemGroup>
+  -->
+  <PropertyGroup>
+    <UseMaui>true</UseMaui>
+  </PropertyGroup>
+
+  <ItemGroup Condition="$(TargetFramework.Contains('net8'))">
+    <PackageReference Include="Microsoft.Maui.Controls" Condition=" $(CustomMauiNet8Version) == '' " Version="$(MauiVersion)" />
+    <PackageReference Include="Microsoft.Maui.Controls" Condition=" $(CustomMauiNet8Version) != '' " Version="$(CustomMauiNet8Version)" />
+  </ItemGroup>
+
+  <ItemGroup Condition="$(TargetFramework.Contains('net9'))">
+    <PackageReference Include="Microsoft.Maui.Controls" Condition=" $(CustomMauiNet9Version) == '' " Version="$(MauiVersion)" />
+    <PackageReference Include="Microsoft.Maui.Controls" Condition=" $(CustomMauiNet9Version) != '' " Version="$(CustomMauiNet9Version)" />
+  </ItemGroup>
+
+  <ItemGroup Condition="$(TargetFramework.Contains('net10'))">
+    <PackageReference Include="Microsoft.Maui.Controls" Condition=" $(CustomMauiNet10Version) == '' " Version="$(MauiVersion)" />
+    <PackageReference Include="Microsoft.Maui.Controls" Condition=" $(CustomMauiNet10Version) != '' " Version="$(CustomMauiNet10Version)" />
+  </ItemGroup>
+
+  <ItemGroup Condition="$(TargetFramework.Contains('net11'))">
+    <PackageReference Include="Microsoft.Maui.Controls" Condition=" $(CustomMauiNet11Version) == '' " Version="$(MauiVersion)" />
+    <PackageReference Include="Microsoft.Maui.Controls" Condition=" $(CustomMauiNet11Version) != '' " Version="$(CustomMauiNet11Version)" />
   </ItemGroup>
 
   <Import Project="$(MauiSrcDirectory)Maui.InTree.props" Condition=" '$(UseMaui)' != 'true' " />

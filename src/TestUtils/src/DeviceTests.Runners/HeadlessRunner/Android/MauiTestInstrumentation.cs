@@ -68,6 +68,18 @@ namespace Microsoft.Maui.TestUtils.DeviceTests.Runners.HeadlessRunner
 			if (!string.IsNullOrWhiteSpace(resultsFilename))
 				RunnerOptions.TestResultsFilename = resultsFilename;
 
+			// Propagate NUNIT filter env vars from instrumentation bundle so Android
+			// filtering works the same way as iOS (which gets them via --set-env).
+			// Values are URL-encoded by BuildAndRunDeviceTests.ps1 to survive adb shell
+			// word-splitting (spaces → %20, [ → %5B, ] → %5D).
+			string[] nunitVars = { "NUNIT_RUN_ALL", "NUNIT_SKIPPED_METHODS", "NUNIT_SKIPPED_CLASSES" };
+			foreach (var key in nunitVars)
+			{
+				var raw = Arguments?.GetString(key);
+				if (!string.IsNullOrEmpty(raw))
+					System.Environment.SetEnvironmentVariable(key, Uri.UnescapeDataString(raw));
+			}
+
 			var bundle = await RunTestsAsync();
 
 			CopyFile(bundle);
@@ -98,7 +110,7 @@ namespace Microsoft.Maui.TestUtils.DeviceTests.Runners.HeadlessRunner
 			}
 			else
 			{
-				var downloads = Android.OS.Environment.DirectoryDownloads!;
+				var downloads = global::Android.OS.Environment.DirectoryDownloads!;
 				var relative = Path.Combine(downloads, Context!.PackageName!, guid);
 
 				var values = new ContentValues();
@@ -113,7 +125,7 @@ namespace Microsoft.Maui.TestUtils.DeviceTests.Runners.HeadlessRunner
 					source.CopyTo(dest);
 
 #pragma warning disable CS0618 // Type or member is obsolete
-				var root = Android.OS.Environment.ExternalStorageDirectory!.AbsolutePath;
+				var root = global::Android.OS.Environment.ExternalStorageDirectory!.AbsolutePath;
 #pragma warning restore CS0618 // Type or member is obsolete
 				finalPath = Path.Combine(root, relative, name);
 			}
